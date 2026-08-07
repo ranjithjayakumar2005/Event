@@ -23,16 +23,25 @@ const sendEmail = async (options) => {
       host: smtpHost || 'smtp.gmail.com',
       port: parseInt(process.env.SMTP_PORT) || 587,
       secure: false,
+      requireTLS: true,
+      tls: {
+        rejectUnauthorized: false
+      },
       auth: {
         user: smtpUser,
         pass: smtpPass
       }
     });
 
-    const qrImageHtml = options.qrUrl ? `
+    // Verify SMTP connection before sending (catches bad credentials / blocked port early)
+    await transporter.verify();
+    console.log(`[Email] SMTP connection verified. Sending to ${options.email}...`);
+
+    const safeQrUrl = options.qrUrl ? options.qrUrl.replace(/&/g, '&amp;') : '';
+    const qrImageHtml = safeQrUrl ? `
       <div style="text-align: center; margin: 20px 0;">
         <div style="display: inline-block; background: #ffffff; padding: 20px; border-radius: 12px; border: 2px dashed #d97757; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <img src="${options.qrUrl}" alt="Auditorium Entry QR Pass" style="width: 200px; height: 200px; display: block; margin: 0 auto 10px;" />
+          <img src="${safeQrUrl}" alt="Auditorium Entry QR Pass" style="width: 200px; height: 200px; display: block; margin: 0 auto 10px;" />
           <span style="font-size: 13px; font-weight: 700; color: #141413; text-transform: uppercase;">AUDITORIUM ENTRY QR PASS</span>
           <p style="font-size: 11px; color: #64748b; margin: 4px 0 0;">Show this QR Pass at the entrance scanner for instant check-in</p>
         </div>
