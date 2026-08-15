@@ -966,6 +966,12 @@ async function confirmRejectTeam() {
   }
 
   const teamId = selectedTeamForAction._id;
+  const rejectBtn = document.getElementById('confirm-reject-btn');
+
+  if (rejectBtn) {
+    rejectBtn.disabled = true;
+    rejectBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Rejecting...`;
+  }
 
   try {
     const response = await fetch(`/api/admin/teams/${teamId}/reject`, {
@@ -991,6 +997,11 @@ async function confirmRejectTeam() {
   } catch (error) {
     console.error('Reject error:', error);
     showToast('Network error while rejecting team', 'error');
+  } finally {
+    if (rejectBtn) {
+      rejectBtn.disabled = false;
+      rejectBtn.innerHTML = `<i class="fa-solid fa-xmark"></i> Confirm Rejection`;
+    }
   }
 }
 
