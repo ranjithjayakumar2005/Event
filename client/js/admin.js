@@ -205,7 +205,7 @@ async function handleAdminLogin(event) {
   event.preventDefault();
 
   const usernameOrEmail = document.getElementById('adminUsername').value.trim();
-  const password = document.getElementById('adminPassword').value;
+  const password = document.getElementById('adminPassword').value.trim();
   const submitBtn = document.getElementById('login-submit-btn');
 
   if (!usernameOrEmail || !password) {
@@ -754,14 +754,31 @@ function openMediaPreview(fileUrl, titleStr, overrideType = null) {
     `;
   } else if (type === 'ppt') {
     const fullHttpUrl = fileUrl.startsWith('http') ? fileUrl : `${window.location.origin}${fileUrl}`;
+    const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fullHttpUrl)}`;
+    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fullHttpUrl)}&embedded=true`;
+
     bodyEl.innerHTML = `
       <div style="width: 100%; text-align: center;">
-        <div style="margin-bottom: 12px; font-size: 13px; color: var(--text-secondary);">
-          <i class="fa-solid fa-file-powerpoint" style="color: var(--accent-amber);"></i> Embedded Pitch Deck Viewer
+        <div style="margin-bottom: 14px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); padding: 12px 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="font-size: 13.5px; font-weight: 700; color: #f59e0b; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-file-powerpoint" style="font-size: 18px;"></i> PowerPoint Pitch Deck Presentation
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <a href="${fileUrl}" download class="btn-primary" style="padding: 7px 16px; font-size: 12px; text-decoration: none; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 20px; color: #ffffff;">
+              <i class="fa-solid fa-download"></i> Download Original PPT
+            </a>
+          </div>
         </div>
-        <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(fullHttpUrl)}&embedded=true" style="width: 100%; height: 60vh; border: none; border-radius: 8px; background: #ffffff;"></iframe>
-        <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);">
-          Note: Local development PPT previews fallback to <a href="${fileUrl}" download style="color: var(--accent-cyan);">Direct Download</a> if Google Docs cannot access localhost.
+
+        <div style="position: relative; width: 100%; height: 58vh; border-radius: 10px; overflow: hidden; background: #1e2433; border: 1px solid var(--border-color);">
+          <iframe id="office-ppt-iframe" src="${officeViewerUrl}" style="width: 100%; height: 100%; border: none; background: #ffffff;" onerror="this.src='${googleViewerUrl}'"></iframe>
+        </div>
+
+        <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <span><i class="fa-solid fa-circle-info" style="color: var(--accent-cyan);"></i> If online preview is restricted on localhost, click Download to view in PowerPoint.</span>
+          <a href="${fileUrl}" target="_blank" download style="color: var(--accent-terracotta); font-weight: 700; text-decoration: underline;">
+            Direct Download File
+          </a>
         </div>
       </div>
     `;

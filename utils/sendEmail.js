@@ -101,61 +101,50 @@ const sendEmail = async (options) => {
 
     const finalHtml = options.customHtml || defaultHtml;
 
-    // Dispatch based on active EMAIL_SERVICE with automatic failover
-    if (service === 'brevo') {
-      if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.trim() !== '') {
-        try {
-          return await sendViaBrevo({
-            to: options.email,
-            fromName,
-            fromEmail,
-            subject: options.subject,
-            html: finalHtml,
-            attachments: rawAttachments
-          });
-        } catch (brevoErr) {
-          console.warn(`[Email Failover] Brevo failed (${brevoErr.message}). Retrying via SMTP...`);
-        }
-      } else {
-        console.warn('[Email Warning] BREVO_API_KEY missing in .env. Falling back to SMTP...');
+    // Automatic Provider Priority for Cloud Deployments (Vercel/Lambda/Render):
+    // HTTPS REST API keys take precedence over SMTP sockets because Port 443 is 100% open and never times out on cloud firewalls.
+    if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.trim() !== '') {
+      try {
+        return await sendViaBrevo({
+          to: options.email,
+          fromName,
+          fromEmail,
+          subject: options.subject,
+          html: finalHtml,
+          attachments: rawAttachments
+        });
+      } catch (brevoErr) {
+        console.warn(`[Email Failover] Brevo HTTPS failed (${brevoErr.message}). Retrying via fallback...`);
       }
     }
 
-    if (service === 'resend') {
-      if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY.trim() !== '') {
-        try {
-          return await sendViaResend({
-            to: options.email,
-            fromName,
-            fromEmail,
-            subject: options.subject,
-            html: finalHtml,
-            attachments: rawAttachments
-          });
-        } catch (resendErr) {
-          console.warn(`[Email Failover] Resend failed (${resendErr.message}). Retrying via SMTP...`);
-        }
-      } else {
-        console.warn('[Email Warning] RESEND_API_KEY missing in .env. Falling back to SMTP...');
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY.trim() !== '') {
+      try {
+        return await sendViaResend({
+          to: options.email,
+          fromName,
+          fromEmail,
+          subject: options.subject,
+          html: finalHtml,
+          attachments: rawAttachments
+        });
+      } catch (resendErr) {
+        console.warn(`[Email Failover] Resend HTTPS failed (${resendErr.message}). Retrying via fallback...`);
       }
     }
 
-    if (service === 'sendgrid') {
-      if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_API_KEY.trim() !== '') {
-        try {
-          return await sendViaSendGrid({
-            to: options.email,
-            fromName,
-            fromEmail,
-            subject: options.subject,
-            html: finalHtml,
-            attachments: rawAttachments
-          });
-        } catch (sgErr) {
-          console.warn(`[Email Failover] SendGrid failed (${sgErr.message}). Retrying via SMTP...`);
-        }
-      } else {
-        console.warn('[Email Warning] SENDGRID_API_KEY missing in .env. Falling back to SMTP...');
+    if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_API_KEY.trim() !== '') {
+      try {
+        return await sendViaSendGrid({
+          to: options.email,
+          fromName,
+          fromEmail,
+          subject: options.subject,
+          html: finalHtml,
+          attachments: rawAttachments
+        });
+      } catch (sgErr) {
+        console.warn(`[Email Failover] SendGrid HTTPS failed (${sgErr.message}). Retrying via fallback...`);
       }
     }
 
@@ -306,20 +295,7 @@ const sendViaSMTP = async ({ to, fromName, fromEmail, subject, html, attachments
   const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
   const smtpUser = (process.env.SMTP_USER || 'for12345freelancing@gmail.com').trim();
   const smtpPass = (process.env.SMTP_PASS || 'hufcciatriruuhbr').trim().replace(/\s+/g, '');
-  let port = parseInt(process.env.SMTP_PORT) || 465; // Default to 465 SSL for cloud safety
-
-  const createTransporter = (targetPort) => {
-    return nodemailer.createTransport({
-      host: smtpHost,
-      port: targetPort,
-      secure: targetPort === 465, // SSL for 465, TLS for 587
-      auth: { user: smtpUser, pass: smtpPass },
-      tls: { rejectUnauthorized: false },
-      connectionTimeout: 8000,
-      greetingTimeout: 8000,
-      socketTimeout: 10000
-    });
-  };
+  let port = parseInt(process.env.SMTP_PORT) || 465;
 
   const mailOptions = {
     from: `${fromName} <${fromEmail}>`,
@@ -329,14 +305,27 @@ const sendViaSMTP = async ({ to, fromName, fromEmail, subject, html, attachments
     attachments
   };
 
+  const createTransporter = (targetPort) => {
+    return nodemailer.createTransport({
+      host: smtpHost,
+      port: targetPort,
+      secure: targetPort === 465,
+      family: 4, // Force IPv4 to prevent IPv6 DNS connection hangs on Render/Vercel cloud containers
+      auth: { user: smtpUser, pass: smtpPass },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000
+    });
+  };
+
   try {
-    console.log(`[Email Engine] Sending via Nodemailer SMTP (${smtpHost}:${port}) to ${to}...`);
+    console.log(`[Email Engine] Sending via Nodemailer Direct IPv4 SMTP (${smtpHost}:${port}) to ${to}...`);
     const transporter = createTransporter(port);
     const info = await transporter.sendMail(mailOptions);
     console.log(`[Email Sent - SMTP Port ${port}] ID: ${info.messageId} to ${to}`);
     return { success: true, info, provider: `smtp-${port}` };
   } catch (firstErr) {
-    // Retry with SSL Port 465 if 587 timed out, or vice versa
     const fallbackPort = port === 465 ? 587 : 465;
     console.warn(`[SMTP Port ${port} Failed] (${firstErr.message}). Retrying on Port ${fallbackPort}...`);
     const fallbackTransporter = createTransporter(fallbackPort);

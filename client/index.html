@@ -1,208 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Startup Pitching Competition 2026 | E-Cell</title>
-  <meta name="description"
-    content="Official registration portal for Intra-College Startup Pitching Competition organized by Entrepreneurship Development Cell (E-Cell).">
-  <!-- Google Fonts & Font Awesome Icons -->
+  <meta name="description" content="Official portal for Intra-College Startup Pitching Competition organized by Entrepreneurship Development Cell (E-Cell).">
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <!-- Typography & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/redesign.css">
+
   <style>
-    /* Inline Modal Overlay System for guaranteed cache-proof execution */
+    /* ── Inline modal overlay & critical styles ── */
     .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(10, 15, 25, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999999;
-      opacity: 0;
-      visibility: hidden;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(10, 13, 20, 0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999999; opacity: 0; visibility: hidden;
       transition: opacity 0.25s ease, visibility 0.25s ease;
-      padding: 14px;
-      box-sizing: border-box;
+      padding: 16px; box-sizing: border-box;
     }
-
-    .modal-overlay.active {
-      opacity: 1 !important;
-      visibility: visible !important;
-      display: flex !important;
-    }
-
+    .modal-overlay.active { opacity: 1 !important; visibility: visible !important; display: flex !important; }
     .modal-container {
-      background: var(--bg-card, #131b2e);
-      border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+      background: var(--bg-card-solid, #FFFFFF);
+      border: 1px solid var(--border-color, #E5E0D8);
       border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
-      width: 100%;
-      max-width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 22px;
-      transform: scale(0.92) translateY(15px);
-      transition: transform 0.25s ease;
-      box-sizing: border-box;
+      box-shadow: var(--shadow-lg, 0 16px 40px rgba(0,0,0,0.15));
+      width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+      padding: 28px; transform: scale(0.95) translateY(10px);
+      transition: transform 0.25s ease; box-sizing: border-box;
     }
-
-    .modal-overlay.active .modal-container {
-      transform: scale(1) translateY(0) !important;
-    }
-
-    @media (max-width: 640px) {
-      .modal-overlay {
-        padding: 10px;
-      }
-
-      .modal-container {
-        padding: 16px 12px;
-        border-radius: 16px;
-        max-height: 94vh;
-      }
-    }
-
-    /* Eureka Step 1 Action Buttons Responsive Layout */
-    .eureka-action-buttons {
-      margin: 18px 0 22px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      width: 100%;
-    }
-
-    .btn-eureka-portal {
-      flex: 1;
-      min-width: 220px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 13px 22px;
-      background: var(--gradient-primary, linear-gradient(135deg, #d97757, #e08e70));
-      color: #ffffff !important;
-      font-weight: 700;
-      font-size: 14.5px;
-      border-radius: 30px;
-      text-decoration: none;
-      box-shadow: 0 4px 18px rgba(217, 119, 87, 0.35);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      box-sizing: border-box;
-      text-align: center;
-    }
-
-    .btn-eureka-portal:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(217, 119, 87, 0.5);
-      color: #ffffff !important;
-    }
-
-    .btn-eureka-guide {
-      flex: 1;
-      min-width: 220px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 13px 22px;
-      background: linear-gradient(135deg, #0ea5e9, #0284c7);
-      color: #ffffff !important;
-      font-weight: 700;
-      font-size: 14.5px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 18px rgba(14, 165, 233, 0.4);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      box-sizing: border-box;
-      text-align: center;
-    }
-
-    .btn-eureka-guide:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(14, 165, 233, 0.6);
-      color: #ffffff !important;
-    }
-
-    @media (max-width: 640px) {
-      .eureka-action-buttons {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .btn-eureka-portal,
-      .btn-eureka-guide {
-        width: 100%;
-        min-width: 100%;
-        padding: 14px 16px;
-        font-size: 14px;
-      }
-    }
+    .modal-overlay.active .modal-container { transform: scale(1) translateY(0) !important; }
   </style>
+
   <script>
-    // Immediate Inline Modal Handlers (Cache-Proof)
+    // Inline theme initializer (Light Mode default)
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+
+    // Modal Handlers
     function openEurekaGuideModal() {
-      var modal = document.getElementById('eureka-guide-modal');
-      if (modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
+      var m = document.getElementById('eureka-guide-modal');
+      if (m) { m.classList.add('active'); document.body.style.overflow = 'hidden'; }
     }
-
     function closeEurekaGuideModal() {
-      var modal = document.getElementById('eureka-guide-modal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+      var m = document.getElementById('eureka-guide-modal');
+      if (m) { m.classList.remove('active'); document.body.style.overflow = ''; }
     }
-
     function switchGuideTab(type) {
-      var mobileImg = document.getElementById('modal-guide-img-mobile');
-      var desktopImg = document.getElementById('modal-guide-img-desktop');
-      var mobileBtn = document.getElementById('modal-tab-mobile-btn');
-      var desktopBtn = document.getElementById('modal-tab-desktop-btn');
-
-      if (!mobileImg || !desktopImg) return;
-
+      var mi = document.getElementById('modal-guide-img-mobile');
+      var di = document.getElementById('modal-guide-img-desktop');
+      var mb = document.getElementById('modal-tab-mobile-btn');
+      var db = document.getElementById('modal-tab-desktop-btn');
+      if (!mi || !di) return;
       if (type === 'mobile') {
-        mobileImg.style.display = 'block';
-        desktopImg.style.display = 'none';
-        if (mobileBtn) {
-          mobileBtn.style.background = 'var(--gradient-primary, linear-gradient(135deg, #d97757, #e08e70))';
-          mobileBtn.style.color = '#ffffff';
-          mobileBtn.style.borderColor = 'transparent';
-        }
-        if (desktopBtn) {
-          desktopBtn.style.background = 'transparent';
-          desktopBtn.style.color = 'var(--text-secondary, #94a3b8)';
-          desktopBtn.style.borderColor = 'transparent';
-        }
+        mi.style.display = 'block'; di.style.display = 'none';
+        if (mb) { mb.style.background = 'var(--accent-terracotta, #C85A32)'; mb.style.color = '#fff'; }
+        if (db) { db.style.background = 'transparent'; db.style.color = 'var(--text-secondary, #5C5955)'; }
       } else {
-        mobileImg.style.display = 'none';
-        desktopImg.style.display = 'block';
-        if (desktopBtn) {
-          desktopBtn.style.background = 'var(--gradient-primary, linear-gradient(135deg, #d97757, #e08e70))';
-          desktopBtn.style.color = '#ffffff';
-          desktopBtn.style.borderColor = 'transparent';
-        }
-        if (mobileBtn) {
-          mobileBtn.style.background = 'transparent';
-          mobileBtn.style.color = 'var(--text-secondary, #94a3b8)';
-          mobileBtn.style.borderColor = 'transparent';
-        }
+        mi.style.display = 'none'; di.style.display = 'block';
+        if (db) { db.style.background = 'var(--accent-terracotta, #C85A32)'; db.style.color = '#fff'; }
+        if (mb) { mb.style.background = 'transparent'; mb.style.color = 'var(--text-secondary, #5C5955)'; }
       }
     }
-
     window.openEurekaGuideModal = openEurekaGuideModal;
     window.closeEurekaGuideModal = closeEurekaGuideModal;
     window.switchGuideTab = switchGuideTab;
@@ -210,717 +77,801 @@
 </head>
 
 <body>
-
-  <!-- Dynamic Background Glowing Orbs -->
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
-  <div class="bg-orb orb-3"></div>
+  <!-- ── GREPTILE-INSPIRED DOT MATRIX & AMBIENT SPOTS ─────────────────────── -->
+  <div class="ambient-bg">
+    <div class="grid-bg-overlay"></div>
+    <div class="ambient-orb-1"></div>
+    <div class="ambient-orb-2"></div>
+  </div>
 
   <!-- Toast Notification Container -->
   <div id="toast-container"></div>
 
-  <!-- Navigation Bar -->
-  <header class="navbar">
-    <div class="container nav-container" style="position: relative;">
-      <div>
-        <a href="index.html" class="brand">
+  <div class="page-wrapper">
+
+    <!-- ══ NAVBAR ══════════════════════════════════════════════════════════ -->
+    <header class="navbar" id="main-navbar">
+      <div class="container nav-container">
+        <a href="javascript:void(0)" onclick="switchTab('home')" class="brand">
           <div class="brand-logo-wrapper">
-            <img src="assets/ecell_logo.png" alt="E-Cell VSBCETC Logo" class="brand-logo-img">
+            <img src="assets/ecell_logo.png" alt="E-Cell Logo" class="brand-logo-img">
           </div>
           <div class="brand-text">
             <h1>E-CELL</h1>
             <span>Startup Pitch 2026</span>
           </div>
         </a>
-      </div>
-      <button type="button" class="top-right-theme-btn" id="mobile-header-theme-btn" onclick="toggleTheme()"
-        title="Toggle Dark/Light Mode">
-        <i class="fa-solid fa-moon"></i>
-      </button>
-      <nav class="nav-links">
-        <button class="nav-btn active" id="tab-register-btn" onclick="switchTab('register')">
-          <i class="fa-solid fa-pen-to-square"></i> Register
-        </button>
-        <button class="nav-btn" id="tab-status-btn" onclick="switchTab('status')">
-          <i class="fa-solid fa-magnifying-glass"></i> Check Status
-        </button>
-        <a href="assets/Official-eureka-template.pptx" class="nav-btn" download="Official-eureka-template.pptx">
-          <i class="fa-solid fa-download"></i> PPT Template
-        </a>
-        <button class="nav-btn theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()"
-          title="Toggle Dark/Light Mode">
-          <i class="fa-solid fa-moon"></i> <span id="theme-toggle-text">Dark Mode</span>
-        </button>
-      </nav>
-    </div>
-  </header>
 
-  <!-- Main Content -->
-  <main class="container" style="padding-top: 30px; padding-bottom: 60px;">
-
-    <!-- Hero Header -->
-    <section class="hero-section">
-      <h1 class="hero-title">Intra-College Startup Pitching Competition</h1>
-      <p class="hero-subtitle">Organized by Entrepreneurship Development Cell (E-Cell). Turn your revolutionary idea
-        into reality and compete for prize pools & mentorship.</p>
-      <div class="hero-badges">
-        <span class="hero-badge"><i class="fa-solid fa-user-graduate"></i> Only 2nd & 3rd Year Students</span>
-        <span class="hero-badge"><i class="fa-solid fa-users"></i> Team Size: 1 to 3 Members</span>
-        <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Verification Required</span>
-        <a href="assets/Official-eureka-template.pptx" download="Official-eureka-template.pptx" class="hero-badge"
-          style="background: var(--gradient-primary); color: #ffffff; text-decoration: none; font-weight: 700; border-color: transparent;">
-          <i class="fa-solid fa-file-powerpoint"></i> Download PPT Template
-        </a>
-      </div>
-    </section>
-
-    <!-- SECTION 1: REGISTRATION TAB -->
-    <div id="view-register" class="tab-view active">
-
-      <!-- PROGRESS STEPPER BAR -->
-      <div class="stepper-bar">
-        <div class="stepper-step active" id="step-1-indicator">
-          <span class="stepper-number">1</span>
-          <span>Eureka Proof</span>
-        </div>
-        <div class="stepper-step" id="step-2-indicator">
-          <span class="stepper-number">2</span>
-          <span>Startup & Team</span>
-        </div>
-        <div class="stepper-step" id="step-3-indicator">
-          <span class="stepper-number">3</span>
-          <span>Pitch Abstract</span>
-        </div>
-        <div class="stepper-step" id="step-4-indicator">
-          <span class="stepper-number">4</span>
-          <span>Uploads & Submit</span>
-        </div>
-      </div>
-
-      <!-- MANDATORY EUREKA REGISTRATION CALLOUT CARD -->
-      <div class="glass-card eureka-card">
-        <div class="card-header" style="border-bottom: none; margin-bottom: 12px; padding-bottom: 0;">
-          <h2 style="color: var(--accent-cyan);">
-            <i class="fa-solid fa-triangle-exclamation"></i> IMPORTANT: Mandatory Pre-Registration Step
-          </h2>
-          <span class="eureka-badge">Step 1 Required</span>
-        </div>
-        <p style="font-size: 15px; color: var(--text-primary); margin-bottom: 12px;">
-          BEFORE submitting your competition registration, every team <strong>MUST</strong> first register for the
-          <strong>Eureka Competition</strong>.
-        </p>
-
-        <!-- FIRST-TIME USER UX HELPER BANNER -->
-        <div
-          style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px; padding: 12px 16px; margin: 14px 0 16px; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-lightbulb" style="color: #38bdf8; font-size: 18px; flex-shrink: 0;"></i>
-          <span style="font-size: 13.5px; color: var(--text-primary); line-height: 1.4;">
-            <strong>Confused where to enter NEC ID?</strong> Tap the glowing <strong style="color: #38bdf8;">"Tap Here
-              to See Where to Enter NEC ID"</strong> button below to view a step-by-step visual screenshot guide!
-          </span>
-        </div>
-
-        <div class="eureka-action-buttons">
-          <a href="https://www.ecell.in/eureka/register" target="_blank" rel="noopener noreferrer"
-            class="btn-eureka-portal">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Eureka Portal
+        <nav class="nav-links">
+          <button class="nav-btn active" id="tab-home-btn" onclick="switchTab('home')">
+            <i class="fa-solid fa-house"></i> Overview
+          </button>
+          <button class="nav-btn" id="tab-register-btn" onclick="switchTab('register')">
+            <i class="fa-solid fa-pen-to-square"></i> Register
+          </button>
+          <button class="nav-btn" id="tab-status-btn" onclick="switchTab('status')">
+            <i class="fa-solid fa-magnifying-glass"></i> Check Status
+          </button>
+          <a href="assets/Official-eureka-template.pptx" class="nav-btn" download="Official-eureka-template.pptx">
+            <i class="fa-solid fa-download"></i> PPT Template
           </a>
-          <button type="button" class="btn-eureka-guide" onclick="openEurekaGuideModal()">
-            <i class="fa-solid fa-image"></i> Tap Here to See Where to Enter NEC ID
+          <!-- Theme Toggle Button -->
+          <button class="nav-btn theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-moon"></i> <span id="theme-toggle-text">Dark Mode</span>
           </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ══ MAIN CONTENT ═════════════════════════════════════════════════════ -->
+    <main class="container" style="padding-top: 24px;">
+
+      <!-- ── SECTION 1: OVERVIEW / MAIN PAGE VIEW ───────────────────────── -->
+      <div id="view-home" class="tab-view active">
+
+        <!-- HERO SECTION (ONLY ON HOME/OVERVIEW TAB) -->
+        <section class="hero-section">
+          <div class="hero-event-badge">
+            <span class="live-dot"></span> E-CELL × STARTUP PITCH 2026 · REGISTRATION PORTAL LIVE
+          </div>
+
+          <h1 class="hero-title">
+            Intra-College <span class="highlight">Startup Pitching</span> Competition
+          </h1>
+
+          <p class="hero-subtitle">
+            Organized by the <strong>Entrepreneurship Development Cell</strong>. Transform your innovative ideas into high-impact startups. Compete for expert mentorship, incubation guidance, and funding connections.
+          </p>
+
+          <div class="hero-badges">
+            <span class="hero-badge"><i class="fa-solid fa-user-graduate"></i> 2nd &amp; 3rd Year Only</span>
+            <span class="hero-badge"><i class="fa-solid fa-users"></i> Team Size: 1 to 3</span>
+            <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Verification Required</span>
+            <button type="button" onclick="switchTab('register')" class="hero-badge cta">
+              <i class="fa-solid fa-paper-plane"></i> Apply &amp; Register Now
+            </button>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="hero-stats">
+            <div class="stat-pill">
+              <span class="stat-pill-value">1 to 3</span>
+              <span class="stat-pill-label">Members per Team</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-value">2nd &amp; 3rd</span>
+              <span class="stat-pill-label">Eligible Years</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-value">Mentorship</span>
+              <span class="stat-pill-label">Expert Incubation</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-value">2026</span>
+              <span class="stat-pill-label">Official Edition</span>
+            </div>
+          </div>
+
+          <!-- 3D Interactive Pitch Deck Showcase -->
+          <div class="hero-3d-showcase-wrapper">
+            <div class="pitch-deck-3d-stage">
+              
+              <!-- Main Floating Glass Pitch Deck Card -->
+              <div class="pitch-deck-card">
+                <div class="deck-card-header">
+                  <span class="deck-tag"><i class="fa-solid fa-file-powerpoint"></i> SLIDE 01 / STARTUP PITCH DECK</span>
+                  <span class="deck-status"><i class="live-dot"></i> READY TO PITCH</span>
+                </div>
+                <div class="deck-card-body">
+                  <h3>AI-Powered Clean Energy &amp; IoT Innovation</h3>
+                  <p>Transforming campus energy efficiency with predictive smart sensors &amp; real-time analytics.</p>
+                  <div class="deck-meta-grid">
+                    <div class="meta-box">
+                      <span class="meta-title">DOMAIN</span>
+                      <span class="meta-val">AI &amp; IoT</span>
+                    </div>
+                    <div class="meta-box">
+                      <span class="meta-title">TEAM SIZE</span>
+                      <span class="meta-val">3 Members</span>
+                    </div>
+                    <div class="meta-box">
+                      <span class="meta-title">EUREKA CODE</span>
+                      <span class="meta-val highlight">NEC2621509</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="deck-card-footer">
+                  <div class="deck-progress-bar"><div class="progress-fill"></div></div>
+                  <span class="deck-footer-text"><i class="fa-solid fa-check-circle" style="color:var(--accent-emerald)"></i> Pitch Deck Ready</span>
+                </div>
+              </div>
+
+              <!-- Floating 3D Badge 1: Verification -->
+              <div class="floating-badge-3d badge-top-right">
+                <i class="fa-solid fa-shield-halved" style="color:var(--accent-emerald);"></i>
+                <div>
+                  <strong>Eureka Verified</strong>
+                  <span>Code NEC2621509 Applied</span>
+                </div>
+              </div>
+
+              <!-- Floating 3D Badge 2: Pass -->
+              <div class="floating-badge-3d badge-bottom-left">
+                <i class="fa-solid fa-qrcode" style="color:var(--accent-terracotta);"></i>
+                <div>
+                  <strong>Auditorium QR Pass</strong>
+                  <span>Instant Entry on Approval</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Overview Hero Banner -->
+        <div class="overview-hero-card" style="margin-top: 32px;">
+          <div class="overview-hero-text">
+            <h2>Empowering Student Innovators &amp; Future Founders</h2>
+            <p>
+              The Entrepreneurship Development Cell (E-Cell) fosters an ecosystem where student ideas transform into real-world ventures. The Intra-College Startup Pitching Competition 2026 provides a platform for visionary teams to refine business models, receive feedback from industry mentors, and get fast-tracked into incubation networks.
+            </p>
+            <div class="overview-hero-actions">
+              <button class="btn-primary" style="width:auto; padding: 12px 28px;" onclick="switchTab('register')">
+                <i class="fa-solid fa-rocket"></i> Register Your Startup Team
+              </button>
+              <a href="assets/Official-eureka-template.pptx" download="Official-eureka-template.pptx" class="btn-secondary" style="padding: 12px 24px; text-decoration:none;">
+                <i class="fa-solid fa-file-powerpoint"></i> Download PPT Template
+              </a>
+            </div>
+          </div>
+
+          <div class="overview-hero-stats-box">
+            <div class="stat-item">
+              <div class="stat-icon-wrapper"><i class="fa-solid fa-lightbulb"></i></div>
+              <div class="stat-text">
+                <strong>Idea Validation</strong>
+                <span>Refine problem statements with industry mentors</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon-wrapper"><i class="fa-solid fa-building-columns"></i></div>
+              <div class="stat-text">
+                <strong>Incubation Network</strong>
+                <span>Direct exposure to E-Cell incubator resources</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon-wrapper"><i class="fa-solid fa-certificate"></i></div>
+              <div class="stat-text">
+                <strong>Official Certificates</strong>
+                <span>Recognized participation &amp; winner awards</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <p style="font-size: 14px; color: var(--text-secondary);">
-          During Eureka registration under <strong>Step 2 (Personal Information)</strong>, when prompted with the
-          question <strong style="color: var(--text-primary);">"From where did you hear about Eureka! 2026 *"</strong>,
-          select <strong>NEC</strong> and enter our exact Referral ID:
-        </p>
-
-        <div class="nec-code-box">
-          <span class="nec-code" id="nec-id-text">NEC2621509</span>
-          <button type="button" class="btn-copy" onclick="copyNecId()">
-            <i class="fa-regular fa-copy"></i> Copy NEC ID
-          </button>
+        <!-- Competition Benefits & Perks Grid -->
+        <div style="margin-bottom: 12px;">
+          <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 6px;">Why Participate?</h2>
+          <p style="color: var(--text-secondary); font-size: 14.5px; margin-bottom: 20px;">
+            Key opportunities offered to every participating team in the 2026 edition:
+          </p>
         </div>
 
-        <p style="font-size: 13px; color: var(--accent-amber); font-weight: 500; margin-top: 14px;">
-          <i class="fa-solid fa-circle-info"></i> After completing Eureka registration, take a screenshot clearly
-          showing the NEC ID and upload it below. Registration cannot be completed without this screenshot!
-        </p>
+        <div class="perks-grid">
+          <div class="perk-card">
+            <div class="perk-icon"><i class="fa-solid fa-user-gear"></i></div>
+            <h3>Expert Mentorship</h3>
+            <p>Get personalized guidance from startup founders, faculty advisors, and technical leaders to shape your pitch deck.</p>
+          </div>
+
+          <div class="perk-card">
+            <div class="perk-icon"><i class="fa-solid fa-diagram-project"></i></div>
+            <h3>Eureka Access</h3>
+            <p>Seamless registration integration with the national Eureka Competition using our official referral code (NEC2621509).</p>
+          </div>
+
+          <div class="perk-card">
+            <div class="perk-icon"><i class="fa-solid fa-qrcode"></i></div>
+            <h3>Auditorium QR Pass</h3>
+            <p>Approved teams receive a digital QR Pass for instant scanner check-in at the live auditorium final round.</p>
+          </div>
+        </div>
+
+        <!-- Competition Roadmap / Timeline -->
+        <div class="glass-card" style="margin-bottom: 32px;">
+          <div class="card-header" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+            <h2><i class="fa-solid fa-route"></i> Competition Roadmap</h2>
+          </div>
+          <div class="timeline-steps">
+            <div class="timeline-step-card">
+              <span class="timeline-step-num">Stage 01</span>
+              <h4>Eureka Registration</h4>
+              <p>Register on the Eureka portal and copy Referral Code <strong>NEC2621509</strong>.</p>
+            </div>
+
+            <div class="timeline-step-card">
+              <span class="timeline-step-num">Stage 02</span>
+              <h4>Portal Registration</h4>
+              <p>Submit team details, startup abstract, presentation PPT &amp; Eureka screenshot.</p>
+            </div>
+
+            <div class="timeline-step-card">
+              <span class="timeline-step-num">Stage 03</span>
+              <h4>Verification &amp; Pass</h4>
+              <p>Admin team reviews submissions and issues an auditorium entry QR Pass.</p>
+            </div>
+
+            <div class="timeline-step-card">
+              <span class="timeline-step-num">Stage 04</span>
+              <h4>Live Pitch Finals</h4>
+              <p>Present your startup pitch to judges, mentors, and investors in the live auditorium.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ SECTION -->
+        <div class="glass-card" style="margin-bottom: 32px;">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-circle-question"></i> Frequently Asked Questions</h2>
+          </div>
+          <div class="faq-container">
+            <div class="faq-item">
+              <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                <span>What is the NEC ID and where do I enter it?</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                NEC ID is our official Referral Code <strong>(NEC2621509)</strong>. When registering on the Eureka portal
+                (<a href="https://www.ecell.in/eureka/register" target="_blank" style="color: var(--accent-terracotta);">ecell.in/eureka/register</a>),
+                go to <em>Step 2 → "From where did you hear about Eureka!"</em> and select <strong>NEC</strong>,
+                then paste <strong>NEC2621509</strong>. Take a screenshot showing this selection as proof.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                <span>Who is eligible to participate?</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                Only <strong>2nd Year and 3rd Year</strong> undergraduate students from all engineering and technology
+                departments are eligible. Teams can have 1 to 3 members.
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                <span>What are the file size and format constraints?</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <strong>Presentation PPT:</strong> Maximum 10 MB (formats: .ppt, .pptx)<br>
+                <strong>Eureka Proof Screenshot:</strong> Maximum 5 MB (formats: .png, .jpg, .jpeg, .pdf)
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-question" onclick="toggleFaq(this)">
+                <span>How can we track our application status?</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                Click <strong>"Check Status"</strong> in the navigation bar and enter your Leader Email Address
+                or Register Number to view status, approval decisions, or print your official registration slip.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVENT COORDINATORS SECTION -->
+        <div class="glass-card" id="event-coordinators-section">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-address-book"></i> Event Coordinators</h2>
+            <span style="font-size:13px; color: var(--accent-terracotta); font-weight:700;">
+              <i class="fa-solid fa-headset"></i> Need Help? Contact Us
+            </span>
+          </div>
+          <p style="font-size:14px; color: var(--text-secondary); margin-bottom:20px;">
+            For any questions, guidance, or assistance — contact our student event coordinators directly:
+          </p>
+          <div class="coordinators-grid">
+            <!-- Male Coordinators -->
+            <div class="coordinator-group-card">
+              <div class="coordinator-group-header">
+                <div class="coordinator-gender-badge male"><i class="fa-solid fa-mars"></i></div>
+                <h3>Event Coordinators (Male)</h3>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Pranith Kumar</span>
+                <a href="tel:9791919289" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 9791919289</a>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Naveen Kumar</span>
+                <a href="tel:8438765412" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 8438765412</a>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Ranjith Kumar</span>
+                <a href="tel:6369104542" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 6369104542</a>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Pranesh</span>
+                <a href="tel:8675763237" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 8675763237</a>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Vignesh</span>
+                <a href="tel:8610657602" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 8610657602</a>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Yugachandran</span>
+                <a href="tel:9003463789" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 9003463789</a>
+              </div>
+            </div>
+
+            <!-- Female Coordinators -->
+            <div class="coordinator-group-card">
+              <div class="coordinator-group-header">
+                <div class="coordinator-gender-badge female"><i class="fa-solid fa-venus"></i></div>
+                <h3>Event Coordinators (Female)</h3>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Shri Vaishnavi</span>
+                <a href="tel:9786353006" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 9786353006</a>
+              </div>
+              <div class="coordinator-item">
+                <span class="coordinator-name">Ranjani</span>
+                <a href="tel:8610724763" class="coordinator-phone-link"><i class="fa-solid fa-phone"></i> 8610724763</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- STUDENT REGISTRATION FORM -->
-      <form id="registration-form" onsubmit="handleRegistrationSubmit(event)" enctype="multipart/form-data">
+      <!-- ── SECTION 2: REGISTER VIEW ────────────────────────────────────── -->
+      <div id="view-register" class="tab-view" style="display:none;">
 
-        <!-- Team Information Card -->
-        <div class="glass-card">
-          <div class="card-header">
-            <h2><i class="fa-solid fa-people-group"></i> Team Information</h2>
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 6px;">Team Registration Portal</h1>
+          <p style="color: var(--text-secondary); font-size: 15px;">Follow the 4 steps below to register your startup team for the 2026 competition.</p>
+        </div>
+
+        <!-- STEP PROGRESS BAR -->
+        <div class="stepper-bar" id="stepper-bar">
+          <div class="stepper-step active" id="step-1-indicator">
+            <span class="stepper-number">1</span>
+            <span>Eureka Proof</span>
           </div>
-          <div class="form-grid full">
-            <div class="form-group">
-              <label for="teamName">Team Name <span class="required">*</span></label>
-              <input type="text" id="teamName" name="teamName" placeholder="e.g. Innovators Squad" required>
-            </div>
+          <div class="stepper-step" id="step-2-indicator">
+            <span class="stepper-number">2</span>
+            <span>Startup &amp; Team</span>
+          </div>
+          <div class="stepper-step" id="step-3-indicator">
+            <span class="stepper-number">3</span>
+            <span>Pitch Abstract</span>
+          </div>
+          <div class="stepper-step" id="step-4-indicator">
+            <span class="stepper-number">4</span>
+            <span>Uploads &amp; Submit</span>
           </div>
         </div>
 
-        <!-- Leader Details Card -->
-        <div class="glass-card">
-          <div class="card-header">
-            <h2><i class="fa-solid fa-user-astronaut"></i> Team Leader Details</h2>
-          </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="leaderName">Full Name <span class="required">*</span></label>
-              <input type="text" id="leaderName" name="leaderName" placeholder="John Doe" required>
-            </div>
-            <div class="form-group">
-              <label for="leaderRegNo">Register Number <span class="required">*</span></label>
-              <input type="text" id="leaderRegNo" name="leaderRegNo" placeholder="e.g. 2112001" required>
-            </div>
-            <div class="form-group">
-              <label for="leaderDept">Department <span class="required">*</span></label>
-              <select id="leaderDept" name="leaderDept" required>
-                <option value="">-- Select Department --</option>
-                <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-                <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AIDS)
-                </option>
-                <option value="Artificial Intelligence & Machine Learning">Artificial Intelligence & Machine Learning
-                  (AIML)</option>
-                <option value="Information Technology">Information Technology (IT)</option>
-                <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
-                <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
-                <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
-                <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="leaderYear">Year <span class="required">*</span></label>
-              <select id="leaderYear" name="leaderYear" required>
-                <option value="">-- Select Year --</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="leaderEmail">Email Address <span class="required">*</span></label>
-              <input type="email" id="leaderEmail" name="leaderEmail" placeholder="john.doe@example.com" required>
-            </div>
-            <div class="form-group">
-              <label for="leaderPhone">Phone Number <span class="required">*</span></label>
-              <input type="tel" id="leaderPhone" name="leaderPhone" placeholder="9876543210" required>
-            </div>
-          </div>
-        </div>
-
-        <!-- Team Members (Optional: Member 2 & Member 3) -->
-        <div class="glass-card">
-          <div class="card-header">
-            <h2><i class="fa-solid fa-users-viewfinder"></i> Team Members (Optional)</h2>
+        <!-- ─ UNCLUTTERED 2-COLUMN EUREKA MANDATORY STEP CARD ────────── -->
+        <div class="glass-card eureka-card">
+          <div class="card-header" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
             <div>
+              <span class="eureka-badge"><i class="fa-solid fa-bolt"></i> Mandatory Pre-Registration Step</span>
+              <h2 style="margin-top: 6px;"><i class="fa-solid fa-shield-halved"></i> Step 1: Eureka Registration Proof</h2>
+            </div>
+          </div>
+
+          <div class="eureka-grid">
+            <!-- Left Column: Instructions & Copy Code -->
+            <div class="eureka-left">
+              <p class="eureka-desc">
+                BEFORE registering here, every team <strong>MUST</strong> first register on the <strong>Eureka Portal</strong>. During Step 2 ("From where did you hear about us?"), select <strong>NEC</strong> and use our official referral code below:
+              </p>
+
+              <div class="nec-code-box">
+                <div class="nec-code-info">
+                  <span class="nec-label">Official Referral Code</span>
+                  <span class="nec-code" id="nec-id-text">NEC2621509</span>
+                </div>
+                <button type="button" class="btn-copy" onclick="copyNecId()">
+                  <i class="fa-regular fa-copy"></i> Copy Code
+                </button>
+              </div>
+
+              <div class="eureka-note">
+                <i class="fa-solid fa-camera"></i>
+                <span>Take a screenshot of the NEC ID confirmation screen during registration — you will upload it in Step 4 below.</span>
+              </div>
+            </div>
+
+            <!-- Right Column: Direct Action Cards -->
+            <div class="eureka-right">
+              <a href="https://www.ecell.in/eureka/register" target="_blank" rel="noopener noreferrer" class="eureka-action-card primary">
+                <div class="action-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                <div class="action-text">
+                  <strong>Open Eureka Portal</strong>
+                  <span>ecell.in/eureka/register</span>
+                </div>
+              </a>
+
+              <button type="button" class="eureka-action-card secondary" onclick="openEurekaGuideModal()">
+                <div class="action-icon"><i class="fa-solid fa-image"></i></div>
+                <div class="action-text">
+                  <strong>View Step-by-Step Guide</strong>
+                  <span>See screenshot where to enter NEC ID</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ REGISTRATION FORM ────────────────────────────────────────── -->
+        <form id="registration-form" onsubmit="handleRegistrationSubmit(event)" enctype="multipart/form-data">
+
+          <!-- Team Information -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-people-group"></i> Team Information</h2>
+            </div>
+            <div class="form-grid full">
+              <div class="form-group">
+                <label for="teamName">Team Name <span class="required">*</span></label>
+                <input type="text" id="teamName" name="teamName" placeholder="e.g. Innovators Squad" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Leader -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-user-astronaut"></i> Team Leader Details</h2>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="leaderName">Full Name <span class="required">*</span></label>
+                <input type="text" id="leaderName" name="leaderName" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="leaderRegNo">Register Number <span class="required">*</span></label>
+                <input type="text" id="leaderRegNo" name="leaderRegNo" placeholder="e.g. 2112001" required>
+              </div>
+              <div class="form-group">
+                <label for="leaderDept">Department <span class="required">*</span></label>
+                <select id="leaderDept" name="leaderDept" required>
+                  <option value="">-- Select Department --</option>
+                  <option value="Computer Science &amp; Engineering">Computer Science &amp; Engineering</option>
+                  <option value="Artificial Intelligence &amp; Data Science">AI &amp; Data Science (AIDS)</option>
+                  <option value="Artificial Intelligence &amp; Machine Learning">AI &amp; Machine Learning (AIML)</option>
+                  <option value="Information Technology">Information Technology (IT)</option>
+                  <option value="Electronics &amp; Communication">Electronics &amp; Communication (ECE)</option>
+                  <option value="Electrical &amp; Electronics">Electrical &amp; Electronics (EEE)</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
+                  <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="leaderYear">Year <span class="required">*</span></label>
+                <select id="leaderYear" name="leaderYear" required>
+                  <option value="">-- Select Year --</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="leaderEmail">Email Address <span class="required">*</span></label>
+                <input type="email" id="leaderEmail" name="leaderEmail" placeholder="john.doe@example.com" required>
+              </div>
+              <div class="form-group">
+                <label for="leaderPhone">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="leaderPhone" name="leaderPhone" placeholder="9876543210" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Members -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-users-viewfinder"></i> Team Members <span style="font-size:14px; font-weight:500; color: var(--text-muted);">(Optional)</span></h2>
               <button type="button" class="btn-secondary" id="add-member-btn" onclick="addNextMember()">
                 <i class="fa-solid fa-user-plus"></i> Add Member
               </button>
             </div>
+
+            <!-- Member 2 -->
+            <div id="member2-section" style="display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 style="font-size:14px; font-weight:700; color: var(--accent-terracotta); text-transform:uppercase; letter-spacing:0.06em;">Member 2 Details</h3>
+                <button type="button" class="btn-secondary" style="padding:4px 12px; font-size:12px;" onclick="toggleMember(2, false)">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </div>
+              <div class="form-grid">
+                <div class="form-group"><label for="member2Name">Name</label><input type="text" id="member2Name" name="member2Name" placeholder="Member Name"></div>
+                <div class="form-group"><label for="member2RegNo">Register No.</label><input type="text" id="member2RegNo" name="member2RegNo" placeholder="Register Number"></div>
+                <div class="form-group">
+                  <label for="member2Dept">Department</label>
+                  <select id="member2Dept" name="member2Dept">
+                    <option value="">-- Select Department --</option>
+                    <option value="Computer Science &amp; Engineering">Computer Science &amp; Engineering</option>
+                    <option value="Artificial Intelligence &amp; Data Science">AI &amp; Data Science (AIDS)</option>
+                    <option value="Artificial Intelligence &amp; Machine Learning">AI &amp; Machine Learning (AIML)</option>
+                    <option value="Information Technology">Information Technology (IT)</option>
+                    <option value="Electronics &amp; Communication">Electronics &amp; Communication (ECE)</option>
+                    <option value="Electrical &amp; Electronics">Electrical &amp; Electronics (EEE)</option>
+                    <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
+                    <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="member2Year">Year</label>
+                  <select id="member2Year" name="member2Year">
+                    <option value="">-- Select Year --</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Member 3 -->
+            <div id="member3-section" style="display:none; margin-top:24px; padding-top:24px; border-top:1px solid var(--border-color);">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 style="font-size:14px; font-weight:700; color: var(--accent-terracotta); text-transform:uppercase; letter-spacing:0.06em;">Member 3 Details</h3>
+                <button type="button" class="btn-secondary" style="padding:4px 12px; font-size:12px;" onclick="toggleMember(3, false)">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </div>
+              <div class="form-grid">
+                <div class="form-group"><label for="member3Name">Name</label><input type="text" id="member3Name" name="member3Name" placeholder="Member Name"></div>
+                <div class="form-group"><label for="member3RegNo">Register No.</label><input type="text" id="member3RegNo" name="member3RegNo" placeholder="Register Number"></div>
+                <div class="form-group">
+                  <label for="member3Dept">Department</label>
+                  <select id="member3Dept" name="member3Dept">
+                    <option value="">-- Select Department --</option>
+                    <option value="Computer Science &amp; Engineering">Computer Science &amp; Engineering</option>
+                    <option value="Artificial Intelligence &amp; Data Science">AI &amp; Data Science (AIDS)</option>
+                    <option value="Artificial Intelligence &amp; Machine Learning">AI &amp; Machine Learning (AIML)</option>
+                    <option value="Information Technology">Information Technology (IT)</option>
+                    <option value="Electronics &amp; Communication">Electronics &amp; Communication (ECE)</option>
+                    <option value="Electrical &amp; Electronics">Electrical &amp; Electronics (EEE)</option>
+                    <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
+                    <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="member3Year">Year</label>
+                  <select id="member3Year" name="member3Year">
+                    <option value="">-- Select Year --</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Member 2 Section -->
-          <div id="member2-section"
-            style="display: none; padding-top: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-              <h3 style="font-size: 16px; color: var(--accent-cyan);">Team Member Details</h3>
-              <button type="button" class="btn-secondary" style="padding: 4px 12px; font-size: 12px;"
-                onclick="toggleMember(2, false)">
-                <i class="fa-solid fa-trash"></i> Remove
-              </button>
+          <!-- Startup Pitch Details -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-lightbulb"></i> Startup Pitch Details</h2>
+            </div>
+            <div class="form-grid full">
+              <div class="form-group">
+                <label for="startupName">Startup Name (Project Name) <span class="required">*</span></label>
+                <input type="text" id="startupName" name="startupName" placeholder="e.g. EcoCharge Solutions (Solar IoT Pitch)" required>
+              </div>
+              <div class="form-group">
+                <label for="innovationDomain">Innovation Domain <span class="required">*</span></label>
+                <select id="innovationDomain" name="innovationDomain" required>
+                  <option value="">-- Select Domain --</option>
+                  <option value="AI">Artificial Intelligence (AI)</option>
+                  <option value="Healthcare">Healthcare &amp; MedTech</option>
+                  <option value="Agriculture">Agriculture &amp; AgriTech</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="Education">EdTech / Education</option>
+                  <option value="IoT">IoT / Hardware</option>
+                  <option value="Robotics">Robotics &amp; Automation</option>
+                  <option value="FinTech">FinTech / Finance</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="problemStatement">Problem Statement <span class="required">*</span></label>
+                <textarea id="problemStatement" name="problemStatement" placeholder="Describe the real-world problem your startup aims to solve..." required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="abstract">
+                  <span>Abstract <span class="required">*</span></span>
+                  <span class="word-count" id="abstract-word-count">0 / 300 words</span>
+                </label>
+                <textarea id="abstract" name="abstract" placeholder="Provide a concise abstract of your startup idea (Maximum 300 words)..." oninput="handleAbstractWordCount()" required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- File Uploads -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-cloud-arrow-up"></i> Document &amp; Verification Uploads</h2>
             </div>
             <div class="form-grid">
               <div class="form-group">
-                <label for="member2Name">Name</label>
-                <input type="text" id="member2Name" name="member2Name" placeholder="Member Name">
+                <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <span>Upload Presentation PPT <span class="required">*</span></span>
+                  <a href="assets/Official-eureka-template.pptx" download="Official-eureka-template.pptx"
+                    style="font-size:12px; color: var(--accent-terracotta); text-decoration:none; font-weight:700; letter-spacing:0; text-transform:none;">
+                    <i class="fa-solid fa-download"></i> Get Template
+                  </a>
+                </label>
+                <div class="upload-dropzone" id="ppt-dropzone" onclick="document.getElementById('pptFile').click()">
+                  <i class="fa-solid fa-file-powerpoint upload-icon"></i>
+                  <div class="upload-text">Click or Drag &amp; Drop PPT File</div>
+                  <div class="upload-hint">Allowed: .ppt, .pptx — Max 10 MB</div>
+                  <input type="file" id="pptFile" name="pptFile" accept=".ppt,.pptx" style="display:none;" onchange="handleFileSelect(this, 'ppt-preview', 10)">
+                </div>
+                <div id="ppt-preview"></div>
               </div>
+
               <div class="form-group">
-                <label for="member2RegNo">Register Number</label>
-                <input type="text" id="member2RegNo" name="member2RegNo" placeholder="Register Number">
-              </div>
-              <div class="form-group">
-                <label for="member2Dept">Department</label>
-                <select id="member2Dept" name="member2Dept">
-                  <option value="">-- Select Department --</option>
-                  <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-                  <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AIDS)
-                  </option>
-                  <option value="Artificial Intelligence & Machine Learning">Artificial Intelligence & Machine Learning
-                    (AIML)</option>
-                  <option value="Information Technology">Information Technology (IT)</option>
-                  <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
-                  <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
-                  <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
-                  <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="member2Year">Year</label>
-                <select id="member2Year" name="member2Year">
-                  <option value="">-- Select Year --</option>
-                  <option value="2nd Year">2nd Year</option>
-                  <option value="3rd Year">3rd Year</option>
-                </select>
+                <label>Upload Eureka Screenshot <span class="required">*</span></label>
+                <div class="upload-dropzone" id="screenshot-dropzone" onclick="document.getElementById('eurekaScreenshot').click()">
+                  <i class="fa-solid fa-file-image upload-icon"></i>
+                  <div class="upload-text">Click or Drag Screenshot Proof</div>
+                  <div class="upload-hint">Allowed: .png, .jpg, .jpeg, .pdf — Max 5 MB</div>
+                  <input type="file" id="eurekaScreenshot" name="eurekaScreenshot" accept=".png,.jpg,.jpeg,.pdf" style="display:none;" onchange="handleFileSelect(this, 'screenshot-preview', 5)">
+                </div>
+                <div id="screenshot-preview"></div>
               </div>
             </div>
           </div>
 
-          <!-- Member 3 Section -->
-          <div id="member3-section" style="display: none; padding-top: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-              <h3 style="font-size: 16px; color: var(--accent-cyan);">Team Member Details</h3>
-              <button type="button" class="btn-secondary" style="padding: 4px 12px; font-size: 12px;"
-                onclick="toggleMember(3, false)">
-                <i class="fa-solid fa-trash"></i> Remove
-              </button>
+          <!-- Declaration & Submit -->
+          <div class="glass-card">
+            <div class="form-group" style="margin-bottom:24px;">
+              <label class="checkbox-group" style="display:flex !important; text-transform:none; letter-spacing:0; font-size:14px; font-weight:400; background: var(--bg-subtle); padding:16px; border-radius: var(--radius-md); border:1px solid var(--border-color); cursor:pointer;">
+                <input type="checkbox" id="declarationConfirmed" name="declarationConfirmed" value="true" required style="width:20px;height:20px; flex-shrink:0; accent-color: var(--accent-terracotta); margin-top:2px; cursor:pointer;">
+                <span style="color: var(--text-secondary); line-height:1.5;">
+                  We confirm that the submitted idea is original and complies with the competition guidelines.
+                </span>
+              </label>
             </div>
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="member3Name">Name</label>
-                <input type="text" id="member3Name" name="member3Name" placeholder="Member Name">
-              </div>
-              <div class="form-group">
-                <label for="member3RegNo">Register Number</label>
-                <input type="text" id="member3RegNo" name="member3RegNo" placeholder="Register Number">
-              </div>
-              <div class="form-group">
-                <label for="member3Dept">Department</label>
-                <select id="member3Dept" name="member3Dept">
-                  <option value="">-- Select Department --</option>
-                  <option value="Computer Science & Engineering">Computer Science & Engineering</option>
-                  <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science (AIDS)
-                  </option>
-                  <option value="Artificial Intelligence & Machine Learning">Artificial Intelligence & Machine Learning
-                    (AIML)</option>
-                  <option value="Information Technology">Information Technology (IT)</option>
-                  <option value="Electronics & Communication">Electronics & Communication (ECE)</option>
-                  <option value="Electrical & Electronics">Electrical & Electronics (EEE)</option>
-                  <option value="Mechanical Engineering">Mechanical Engineering (MECH)</option>
-                  <option value="Civil Engineering">Civil Engineering (CIVIL)</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="member3Year">Year</label>
-                <select id="member3Year" name="member3Year">
-                  <option value="">-- Select Year --</option>
-                  <option value="2nd Year">2nd Year</option>
-                  <option value="3rd Year">3rd Year</option>
-                </select>
-              </div>
-            </div>
+            <button type="submit" class="btn-primary" id="submit-btn">
+              <i class="fa-solid fa-paper-plane"></i> Submit Registration
+            </button>
           </div>
+        </form>
+
+      </div>
+
+      <!-- ── SECTION 3: STATUS CHECK VIEW ───────────────────────────────── -->
+      <div id="view-status" class="tab-view" style="display:none;">
+        <div style="margin-bottom: 24px;">
+          <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 6px;">Application Status Search</h1>
+          <p style="color: var(--text-secondary); font-size: 15px;">Check approval decision and print auditorium entry QR pass.</p>
         </div>
 
-        <!-- Startup Pitch Details Card -->
         <div class="glass-card">
           <div class="card-header">
-            <h2><i class="fa-solid fa-lightbulb"></i> Startup Pitch Details</h2>
+            <h2><i class="fa-solid fa-magnifying-glass"></i> Check Application Status</h2>
           </div>
-          <div class="form-grid full">
-            <div class="form-group">
-              <label for="startupName">Startup Name (Project Name) <span class="required">*</span></label>
-              <input type="text" id="startupName" name="startupName"
-                placeholder="e.g. EcoCharge Solutions (Solar IoT Pitch)" required>
-            </div>
-            <div class="form-group">
-              <label for="innovationDomain">Innovation Domain <span class="required">*</span></label>
-              <select id="innovationDomain" name="innovationDomain" required>
-                <option value="">-- Select Domain --</option>
-                <option value="AI">AI</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Agriculture">Agriculture</option>
-                <option value="Cybersecurity">Cybersecurity</option>
-                <option value="Education">Education</option>
-                <option value="IoT">IoT</option>
-                <option value="Robotics">Robotics</option>
-                <option value="FinTech">FinTech</option>
-                <option value="Others">Others</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="problemStatement">Problem Statement <span class="required">*</span></label>
-              <textarea id="problemStatement" name="problemStatement"
-                placeholder="Describe the real-world problem your startup aims to solve..." required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="abstract">
-                <span>Abstract <span class="required">*</span></span>
-                <span class="word-count" id="abstract-word-count">0 / 300 words</span>
-              </label>
-              <textarea id="abstract" name="abstract"
-                placeholder="Provide a concise abstract of your startup idea (Maximum 300 words)..."
-                oninput="handleAbstractWordCount()" required></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- File Uploads Card -->
-        <div class="glass-card">
-          <div class="card-header">
-            <h2><i class="fa-solid fa-cloud-arrow-up"></i> Document & Verification Uploads</h2>
-          </div>
-          <div class="form-grid">
-
-            <!-- Upload PPT -->
-            <div class="form-group">
-              <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span>Upload Presentation PPT <span class="required">*</span></span>
-                <a href="assets/Official-eureka-template.pptx" download="Official-eureka-template.pptx"
-                  style="font-size: 12px; color: var(--accent-cyan); text-decoration: none; font-weight: 700;">
-                  <i class="fa-solid fa-download"></i> Get Template
-                </a>
-              </label>
-              <div class="upload-dropzone" id="ppt-dropzone" onclick="document.getElementById('pptFile').click()">
-                <i class="fa-solid fa-file-powerpoint upload-icon"></i>
-                <div class="upload-text">Click or Drag & Drop PPT File</div>
-                <div class="upload-hint">Allowed: .ppt, .pptx (Max 10MB)</div>
-                <input type="file" id="pptFile" name="pptFile" accept=".ppt,.pptx" style="display:none;"
-                  onchange="handleFileSelect(this, 'ppt-preview', 10)">
-              </div>
-              <div id="ppt-preview"></div>
-            </div>
-
-            <!-- Upload Eureka Screenshot -->
-            <div class="form-group">
-              <label>Upload Eureka Screenshot <span class="required">*</span></label>
-              <div class="upload-dropzone" id="screenshot-dropzone"
-                onclick="document.getElementById('eurekaScreenshot').click()">
-                <i class="fa-solid fa-file-image upload-icon"></i>
-                <div class="upload-text">Click or Drag Screenshot Proof</div>
-                <div class="upload-hint">Allowed: .png, .jpg, .jpeg, .pdf (Max 5MB)</div>
-                <input type="file" id="eurekaScreenshot" name="eurekaScreenshot" accept=".png,.jpg,.jpeg,.pdf"
-                  style="display:none;" onchange="handleFileSelect(this, 'screenshot-preview', 5)">
-              </div>
-              <div id="screenshot-preview"></div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Declaration & Submit Card -->
-        <div class="glass-card">
-          <div class="form-group" style="margin-bottom: 24px;">
-            <label class="checkbox-group">
-              <input type="checkbox" id="declarationConfirmed" name="declarationConfirmed" value="true" required>
-              <span style="font-size: 14px; color: var(--text-primary);">
-                "We confirm that the submitted idea is original and complies with the competition guidelines."
-              </span>
-            </label>
-          </div>
-
-          <button type="submit" class="btn-primary" id="submit-btn">
-            <i class="fa-solid fa-paper-plane"></i> Submit Registration
-          </button>
-        </div>
-      </form>
-
-      <!-- FAQ ACCORDION SECTION -->
-      <div class="glass-card" style="margin-top: 30px;">
-        <div class="card-header">
-          <h2><i class="fa-solid fa-circle-question"></i> Frequently Asked Questions</h2>
-        </div>
-        <div class="faq-container">
-          <div class="faq-item">
-            <button type="button" class="faq-question" onclick="toggleFaq(this)">
-              <span>What is the NEC ID and where do I enter it?</span>
-              <i class="fa-solid fa-chevron-down"></i>
+          <p style="color: var(--text-secondary); margin-bottom:20px;">
+            Enter the Leader's Email Address or Register Number used during registration.
+          </p>
+          <div class="status-search-box">
+            <input type="text" id="status-search-input" placeholder="e.g. john.doe@example.com or 2112001">
+            <button type="button" class="btn-primary" style="width:auto; padding:0 24px;" onclick="checkApplicationStatus()">
+              <i class="fa-solid fa-magnifying-glass"></i> Search
             </button>
-            <div class="faq-answer">
-              NEC ID is our official Referral Code (<strong>NEC2621509</strong>). When registering on the Eureka portal
-              (<a href="https://www.ecell.in/eureka/register" target="_blank"
-                style="color: var(--accent-cyan);">ecell.in/eureka/register</a>), select <em>"Where did you find about
-                us?"</em> and paste <strong>NEC2621509</strong>. Take a screenshot showing this selection as proof!
-            </div>
           </div>
-          <div class="faq-item">
-            <button type="button" class="faq-question" onclick="toggleFaq(this)">
-              <span>Who is eligible to participate in the competition?</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              Only 2nd Year and 3rd Year undergraduate students from all engineering and technology departments are
-              eligible to form teams (1 to 3 members per team).
-            </div>
-          </div>
-          <div class="faq-item">
-            <button type="button" class="faq-question" onclick="toggleFaq(this)">
-              <span>What are the file size and format constraints?</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              - <strong>Presentation PPT</strong>: Maximum <strong>10 MB</strong> (Formats: <code>.ppt</code>,
-              <code>.pptx</code>)<br>
-              - <strong>Eureka Proof Screenshot</strong>: Maximum <strong>5 MB</strong> (Formats: <code>.png</code>,
-              <code>.jpg</code>, <code>.jpeg</code>, <code>.pdf</code>)
-            </div>
-          </div>
-          <div class="faq-item">
-            <button type="button" class="faq-question" onclick="toggleFaq(this)">
-              <span>How can we track our application approval status?</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              Click on the <strong>"Check Status"</strong> tab in the navigation bar and enter your Leader Email Address
-              or Register Number to view status, approval decisions, or print your official registration slip.
-            </div>
-          </div>
+          <div id="status-result-container"></div>
         </div>
       </div>
 
-      <!-- EVENT COORDINATORS SECTION -->
-      <div class="glass-card" style="margin-top: 30px;" id="event-coordinators-section">
-        <div class="card-header">
-          <h2><i class="fa-solid fa-address-book"></i> Event Coordinators</h2>
-          <span style="font-size: 13px; color: var(--accent-terracotta); font-weight: 600;">
-            <i class="fa-solid fa-headset"></i> Need Help? Contact Us
-          </span>
-        </div>
-        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">
-          For any questions, guidance, or assistance regarding the Startup Pitching Competition, please contact our
-          student event coordinators:
-        </p>
+    </main>
+  </div>
 
-        <div class="coordinators-grid">
-          <!-- Male Coordinators -->
-          <div class="coordinator-group-card">
-            <div class="coordinator-group-header">
-              <div class="coordinator-gender-badge male">
-                <i class="fa-solid fa-mars"></i>
-              </div>
-              <h3 style="font-size: 16px; font-weight: 700; margin: 0; color: var(--text-primary);">Event Coordinator:
-                (Male)</h3>
-            </div>
+  <!-- ── MODALS ────────────────────────────────────────────────────────── -->
 
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #0ea5e9; font-size: 14px;"></i>
-                  <span class="coordinator-name">Pranith kumar</span>
-                </div>
-                <a href="tel:9791919289" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 9791919289
-                </a>
-              </div>
-
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #0ea5e9; font-size: 14px;"></i>
-                  <span class="coordinator-name">Naveen Kumar</span>
-                </div>
-                <a href="tel:8438765412" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 8438765412
-                </a>
-              </div>
-
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #0ea5e9; font-size: 14px;"></i>
-                  <span class="coordinator-name">Ranjith kumar</span>
-                </div>
-                <a href="tel:6369104542" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 6369104542
-                </a>
-              </div>
-
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #0ea5e9; font-size: 14px;"></i>
-                  <span class="coordinator-name">Pranesh</span>
-                </div>
-                <a href="tel:8675763237" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 8675763237
-                </a>
-              </div>
-
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #0ea5e9; font-size: 14px;"></i>
-                  <span class="coordinator-name">Vignesh</span>
-                </div>
-                <a href="tel:8610657602" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 8610657602
-                </a>
-              </div>
-
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #0ea5e9; font-size: 14px;"></i>
-                  <span class="coordinator-name">Yugachandran</span>
-                </div>
-                <a href="tel:9003463789" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 9003463789
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Female Coordinators -->
-          <div class="coordinator-group-card">
-            <div class="coordinator-group-header">
-              <div class="coordinator-gender-badge female">
-                <i class="fa-solid fa-venus"></i>
-              </div>
-              <h3 style="font-size: 16px; font-weight: 700; margin: 0; color: var(--text-primary);">Event Coordinator:
-                (Female)</h3>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #ec4899; font-size: 14px;"></i>
-                  <span class="coordinator-name">Shri Vaishnavi</span>
-                </div>
-                <a href="tel:9786353006" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 97863 53006
-                </a>
-              </div>
-
-              <div class="coordinator-item">
-                <div class="coordinator-name-wrapper">
-                  <i class="fa-solid fa-user" style="color: #ec4899; font-size: 14px;"></i>
-                  <span class="coordinator-name">Ranjani</span>
-                </div>
-                <a href="tel:8610724763" class="coordinator-phone-link">
-                  <i class="fa-solid fa-phone"></i> 8610724763
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- SECTION 2: STATUS CHECK TAB -->
-    <div id="view-status" class="tab-view" style="display: none;">
-      <div class="glass-card">
-        <div class="card-header">
-          <h2><i class="fa-solid fa-magnifying-glass"></i> Check Application Status</h2>
-        </div>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">
-          Enter the Leader's Email Address or Register Number used during registration to verify your application
-          status.
-        </p>
-        <div class="status-search-box" style="display: flex; gap: 12px; max-width: 600px; margin-bottom: 24px;">
-          <input type="text" id="status-search-input" placeholder="e.g. john.doe@example.com or 2112001"
-            style="flex: 1;">
-          <button type="button" class="btn-primary" style="width: auto; padding: 0 24px;"
-            onclick="checkApplicationStatus()">
-            Search Status
-          </button>
-        </div>
-
-        <!-- Status Result Output Container -->
-        <div id="status-result-container"></div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Submission Success Modal -->
+  <!-- Success Modal -->
   <div class="modal-overlay" id="success-modal">
-    <div class="modal-container" style="max-width: 500px; text-align: center;">
-      <div style="font-size: 56px; color: var(--accent-emerald); margin-bottom: 16px;">
-        <i class="fa-solid fa-circle-check"></i>
+    <div class="modal-container" style="text-align:center;">
+      <div style="font-size:56px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald);"></i>
       </div>
-      <h2 style="font-size: 24px; margin-bottom: 12px;">Registration Submitted!</h2>
-      <p style="color: var(--text-secondary); font-size: 15px; margin-bottom: 20px;" id="success-modal-message">
-        Your team registration has been recorded successfully. Status is currently Pending Verification by the admin.
+      <h2 style="font-size:24px; margin-bottom:12px;">Registration Submitted!</h2>
+      <p style="color: var(--text-secondary); font-size:15px; margin-bottom:24px;" id="success-modal-message">
+        Your team registration has been recorded successfully. Status is currently Pending Verification.
       </p>
       <button class="btn-primary" onclick="closeSuccessModal()">
-        Got It
+        <i class="fa-solid fa-check"></i> Got It
       </button>
     </div>
   </div>
 
-  <!-- EUREKA MOBILE & DESKTOP FIELD GUIDE POPUP MODAL OVERLAY -->
-  <div class="modal-overlay" id="eureka-guide-modal" onclick="if(event.target === this) closeEurekaGuideModal()">
+  <!-- Eureka Guide Modal -->
+  <div class="modal-overlay" id="eureka-guide-modal" onclick="if(event.target===this)closeEurekaGuideModal()">
     <div class="modal-container">
-
-      <!-- Modal Header -->
-      <div
-        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
-        <h3
-          style="font-size: 17px; font-weight: 700; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; margin: 0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--border-color); padding-bottom:14px;">
+        <h3 style="font-size:17px; font-weight:700; color: var(--accent-terracotta); display:flex; align-items:center; gap:8px; margin:0;">
           <i class="fa-solid fa-mobile-screen-button"></i> Eureka Registration Guide
         </h3>
-        <button type="button" class="btn-secondary" style="padding: 5px 12px; font-size: 13px; border-radius: 20px;"
-          onclick="closeEurekaGuideModal()">
+        <button type="button" class="btn-secondary" style="padding:5px 14px; font-size:13px;" onclick="closeEurekaGuideModal()">
           <i class="fa-solid fa-xmark"></i> Close
         </button>
       </div>
 
-      <!-- View Selector Tabs (Mobile vs Desktop) -->
-      <div
-        style="display: flex; gap: 8px; margin-bottom: 16px; background: rgba(0, 0, 0, 0.3); padding: 4px; border-radius: 30px; border: 1px solid var(--border-color);">
+      <div style="display:flex; gap:8px; margin-bottom:16px; background: var(--bg-subtle); padding:4px; border-radius:30px; border:1px solid var(--border-color);">
         <button type="button" class="btn-secondary" id="modal-tab-mobile-btn" onclick="switchGuideTab('mobile')"
-          style="flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 600; border-radius: 25px; background: var(--gradient-primary); color: #ffffff; border-color: transparent; box-shadow: 0 4px 14px rgba(217, 119, 87, 0.4);">
+          style="flex:1; padding:8px 14px; font-size:13px; font-weight:700; border-radius:26px; background: var(--accent-terracotta); color:#fff; border-color:transparent;">
           <i class="fa-solid fa-mobile-screen-button"></i> Mobile View
         </button>
         <button type="button" class="btn-secondary" id="modal-tab-desktop-btn" onclick="switchGuideTab('desktop')"
-          style="flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 600; border-radius: 25px; background: transparent; color: var(--text-secondary); border-color: transparent;">
+          style="flex:1; padding:8px 14px; font-size:13px; font-weight:700; border-radius:26px; background:transparent; color: var(--text-secondary); border-color:transparent;">
           <i class="fa-solid fa-laptop"></i> Desktop View
         </button>
       </div>
 
-      <!-- Mobile Guide Image Box -->
-      <div id="modal-guide-img-mobile" style="display: block; width: 100%; text-align: center;">
-        <div
-          style="background: #000; padding: 10px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); display: inline-block; width: 100%; max-width: 320px; box-sizing: border-box;">
-          <img src="assets/eureka_mobile_guide.png" alt="Mobile Eureka Registration Field Guide"
-            style="width: 100%; height: auto; border-radius: 10px; display: block;">
+      <div id="modal-guide-img-mobile" style="display:block; width:100%; text-align:center;">
+        <div style="background: var(--bg-subtle); padding:8px; border-radius:12px; border:1px solid var(--border-color); display:inline-block; width:100%; max-width:320px; box-sizing:border-box;">
+          <img src="assets/eureka_mobile_guide.png" alt="Mobile Eureka Guide" style="width:100%; height:auto; border-radius:8px; display:block;">
         </div>
       </div>
 
-      <!-- Desktop Guide Image Box -->
-      <div id="modal-guide-img-desktop" style="display: none; width: 100%; text-align: center;">
-        <div
-          style="background: #000; padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); width: 100%; box-sizing: border-box;">
-          <img src="assets/eureka_guide.png" alt="Desktop Eureka Registration Field Guide"
-            style="width: 100%; height: auto; border-radius: 8px; display: block;">
+      <div id="modal-guide-img-desktop" style="display:none; width:100%; text-align:center;">
+        <div style="background: var(--bg-subtle); padding:8px; border-radius:12px; border:1px solid var(--border-color); width:100%; box-sizing:border-box;">
+          <img src="assets/eureka_guide.png" alt="Desktop Eureka Guide" style="width:100%; height:auto; border-radius:8px; display:block;">
         </div>
       </div>
 
-      <!-- Clear Step-by-Step Instructions -->
-      <div
-        style="margin-top: 16px; text-align: left; background: rgba(0, 0, 0, 0.25); padding: 14px; border-radius: 12px; font-size: 13px; border: 1px solid var(--border-color); line-height: 1.6;">
-        <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">
-          <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald);"></i> Exact Field Entries for Step 2
-          (Personal Information):
+      <div style="margin-top:16px; background: var(--bg-subtle); padding:14px; border-radius:12px; font-size:13px; border:1px solid var(--border-color); line-height:1.6;">
+        <div style="font-weight:700; color: var(--text-primary); margin-bottom:8px;">
+          <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald);"></i> Exact Field Entries for Step 2:
         </div>
-        <div style="margin-bottom: 6px;">1. <strong>From where did you hear about Eureka! 2026 *</strong>: Select
-          <strong style="color: var(--accent-cyan);">NEC</strong>
-        </div>
-        <div>2. <strong>Referral ID *</strong>: Type <strong style="color: var(--accent-cyan);">NEC2621509</strong>
-        </div>
+        <div style="margin-bottom:6px;">1. <strong>From where did you hear about Eureka!:</strong> Select <strong>NEC</strong></div>
+        <div>2. <strong>Referral ID:</strong> Type <strong style="color: var(--accent-terracotta); font-family:'JetBrains Mono',monospace;">NEC2621509</strong></div>
       </div>
 
-      <!-- Action Footer -->
-      <div style="margin-top: 18px; display: flex; gap: 10px;">
-        <button type="button" class="btn-secondary" style="flex: 1; padding: 10px;" onclick="closeEurekaGuideModal()">
-          Close
-        </button>
+      <div style="margin-top:16px; display:flex; gap:10px;">
+        <button type="button" class="btn-secondary" style="flex:1; padding:10px;" onclick="closeEurekaGuideModal()">Close</button>
         <a href="https://www.ecell.in/eureka/register" target="_blank" rel="noopener noreferrer" class="btn-primary"
-          style="flex: 1.5; display: inline-flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; padding: 10px; font-weight: 600;">
+          style="flex:1.5; display:inline-flex; justify-content:center; align-items:center; gap:8px; text-decoration:none; padding:10px; font-weight:700;">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Eureka Portal
         </a>
       </div>
-
     </div>
   </div>
 
-  <!-- Floating Mobile Bottom Navigation Bar -->
+  <!-- ── MOBILE BOTTOM NAV ──────────────────────────────────────────────── -->
   <div class="mobile-bottom-nav">
-    <button class="mobile-nav-btn active" id="mobile-tab-register" onclick="switchTab('register')">
+    <button class="mobile-nav-btn active" id="mobile-tab-home" onclick="switchTab('home')">
+      <i class="fa-solid fa-house"></i>
+      <span>Overview</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobile-tab-register" onclick="switchTab('register')">
       <i class="fa-solid fa-pen-to-square"></i>
       <span>Register</span>
     </button>
@@ -928,13 +879,9 @@
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Status</span>
     </button>
-    <a href="assets/Official-eureka-template.pptx" class="mobile-nav-btn" download="Official-eureka-template.pptx">
-      <i class="fa-solid fa-download"></i>
-      <span>PPT</span>
-    </a>
   </div>
 
-  <script src="js/app.js?v=20260807"></script>
+  <!-- ── SCRIPTS ────────────────────────────────────────────────────────── -->
+  <script src="js/app.js?v=20260814"></script>
 </body>
-
 </html>

@@ -1,17 +1,39 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const cloudinary = require('cloudinary').v2;
 
-// Ensure upload directories exist
-const pptDir = path.join(__dirname, '../uploads/ppt');
-const screenshotDir = path.join(__dirname, '../uploads/screenshots');
+// Helper to get a guaranteed writable uploads directory (uses os.tmpdir() on Vercel / Serverless read-only environments)
+function getUploadDir(subfolder = '') {
+  const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NOW_REGION);
+  let targetDir = path.join(__dirname, '../uploads', subfolder);
 
-if (!fs.existsSync(pptDir)) {
-  fs.mkdirSync(pptDir, { recursive: true });
-}
-if (!fs.existsSync(screenshotDir)) {
-  fs.mkdirSync(screenshotDir, { recursive: true });
+  if (isServerless) {
+    targetDir = path.join(os.tmpdir(), 'uploads', subfolder);
+  } else {
+    try {
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+      // Test writability
+      const testFile = path.join(targetDir, `.writable_test_${Date.now()}`);
+      fs.writeFileSync(testFile, 'test');
+      fs.unlinkSync(testFile);
+    } catch (err) {
+      targetDir = path.join(os.tmpdir(), 'uploads', subfolder);
+    }
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    try {
+      fs.mkdirSync(targetDir, { recursive: true });
+    } catch (err) {
+      console.warn(`[Upload Dir Warning] Could not create ${targetDir}:`, err.message);
+    }
+  }
+
+  return targetDir;
 }
 
 // Check and dynamically configure Cloudinary via environment variables
@@ -35,9 +57,9 @@ const ensureCloudinaryConfigured = () => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === 'pptFile') {
-      cb(null, pptDir);
+      cb(null, getUploadDir('ppt'));
     } else if (file.fieldname === 'eurekaScreenshot') {
-      cb(null, screenshotDir);
+      cb(null, getUploadDir('screenshots'));
     } else {
       cb(new Error('Invalid field name for file upload'));
     }

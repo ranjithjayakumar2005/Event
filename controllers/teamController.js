@@ -3,7 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const { getIsConnected } = require('../config/db');
 
-const memoryBackupPath = path.join(__dirname, '../uploads/in_memory_teams_backup.json');
+const os = require('os');
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NOW_REGION);
+const memoryBackupPath = isServerless
+  ? path.join(os.tmpdir(), 'in_memory_teams_backup.json')
+  : path.join(__dirname, '../uploads/in_memory_teams_backup.json');
 
 // In-Memory Fallback Storage with Auto JSON Disk Persistence
 const inMemoryTeams = [];
@@ -311,7 +315,7 @@ exports.getTeamStatus = async (req, res, next) => {
   }
 };
 
-// @desc    Download PPT Template
+// @desc    Download PPT Template with explicit Office Open XML presentation headers
 // @route   GET /api/teams/template
 // @access  Public
 exports.downloadPptTemplate = (req, res) => {
@@ -319,14 +323,74 @@ exports.downloadPptTemplate = (req, res) => {
   const assetOfficialTemplatePath = path.join(__dirname, '../client/assets/Official-eureka-template.pptx');
   const assetTemplatePath = path.join(__dirname, '../client/assets/Startup_Pitch_Template.pptx');
 
-  if (fs.existsSync(rootOfficialTemplatePath)) {
-    return res.download(rootOfficialTemplatePath, 'Official-eureka-template.pptx');
-  } else if (fs.existsSync(assetOfficialTemplatePath)) {
-    return res.download(assetOfficialTemplatePath, 'Official-eureka-template.pptx');
-  } else if (fs.existsSync(assetTemplatePath)) {
-    return res.download(assetTemplatePath, 'Official-eureka-template.pptx');
+  let targetFile = null;
+  if (fs.existsSync(rootOfficialTemplatePath)) targetFile = rootOfficialTemplatePath;
+  else if (fs.existsSync(assetOfficialTemplatePath)) targetFile = assetOfficialTemplatePath;
+  else if (fs.existsSync(assetTemplatePath)) targetFile = assetTemplatePath;
+
+  if (targetFile) {
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.presentationml.presentation');
+    res.setHeader('Content-Disposition', 'attachment; filename="Official-eureka-template.pptx"');
+    return res.sendFile(targetFile);
   } else {
     res.status(404).json({ success: false, message: 'PPT Template file not found.' });
+  }
+};
+
+// @desc    Download uploaded Team Presentation PPT
+// @route   GET /api/teams/:id/download-ppt
+// @access  Public
+exports.downloadTeamPpt = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    let team;
+
+    if (getIsConnected()) {
+      team = await Team.findById(id);
+    } else {
+      team = inMemoryTeams.find(t => t._id === id || String(t._id) === String(id));
+    }
+
+    if (!team || !team.pptFile) {
+      return res.status(404).json({ success: false, message: 'Team PPT file not found.' });
+    }
+
+    const sanitizedTeamName = (team.teamName || 'Team').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const ext = path.extname(team.pptFile) || '.pptx';
+    const downloadFileName = `${sanitizedTeamName}_Pitch_Deck${ext}`;
+
+    const mimeType = ext.toLowerCase() === '.ppt'
+      ? 'application/vnd.ms-powerpoint'
+      : 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+
+    res.setHeader('Content-Type', mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${downloadFileName}"`);
+
+    // Handle Cloudinary / Remote URLs
+    if (team.pptFile.startsWith('http')) {
+      const http = team.pptFile.startsWith('https') ? require('https') : require('http');
+      http.get(team.pptFile, (stream) => {
+        stream.pipe(res);
+      }).on('error', () => {
+        res.status(500).json({ success: false, message: 'Failed streaming remote PPT file.' });
+      });
+      return;
+    }
+
+    // Resolve local file path (check project uploads dir and os.tmpdir() uploads dir)
+    let localPath = path.join(__dirname, '..', team.pptFile);
+    if (!fs.existsSync(localPath)) {
+      const filename = path.basename(team.pptFile);
+      localPath = path.join(os.tmpdir(), 'uploads', 'ppt', filename);
+    }
+
+    if (fs.existsSync(localPath)) {
+      return res.sendFile(localPath);
+    } else {
+      return res.status(404).json({ success: false, message: 'Local PPT file missing on server.' });
+    }
+  } catch (err) {
+    next(err);
   }
 };
 

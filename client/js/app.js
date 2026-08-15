@@ -278,30 +278,46 @@ function copyNecId() {
   });
 }
 
-// Tab Switching
+// Tab Switching System (Home, Register, Status)
 function switchTab(tabName) {
+  const homeView = document.getElementById('view-home');
   const registerView = document.getElementById('view-register');
   const statusView = document.getElementById('view-status');
+
+  const homeBtn = document.getElementById('tab-home-btn');
   const registerBtn = document.getElementById('tab-register-btn');
   const statusBtn = document.getElementById('tab-status-btn');
+
+  const mobileHomeBtn = document.getElementById('mobile-tab-home');
   const mobileRegisterBtn = document.getElementById('mobile-tab-register');
   const mobileStatusBtn = document.getElementById('mobile-tab-status');
 
-  if (tabName === 'register') {
-    registerView.style.display = 'block';
-    statusView.style.display = 'none';
+  // Reset all views
+  if (homeView) homeView.style.display = 'none';
+  if (registerView) registerView.style.display = 'none';
+  if (statusView) statusView.style.display = 'none';
+
+  // Reset active buttons
+  [homeBtn, registerBtn, statusBtn, mobileHomeBtn, mobileRegisterBtn, mobileStatusBtn].forEach(btn => {
+    if (btn) btn.classList.remove('active');
+  });
+
+  if (tabName === 'home') {
+    if (homeView) homeView.style.display = 'block';
+    if (homeBtn) homeBtn.classList.add('active');
+    if (mobileHomeBtn) mobileHomeBtn.classList.add('active');
+  } else if (tabName === 'register') {
+    if (registerView) registerView.style.display = 'block';
     if (registerBtn) registerBtn.classList.add('active');
-    if (statusBtn) statusBtn.classList.remove('active');
     if (mobileRegisterBtn) mobileRegisterBtn.classList.add('active');
-    if (mobileStatusBtn) mobileStatusBtn.classList.remove('active');
   } else if (tabName === 'status') {
-    registerView.style.display = 'none';
-    statusView.style.display = 'block';
-    if (registerBtn) registerBtn.classList.remove('active');
+    if (statusView) statusView.style.display = 'block';
     if (statusBtn) statusBtn.classList.add('active');
-    if (mobileRegisterBtn) mobileRegisterBtn.classList.remove('active');
     if (mobileStatusBtn) mobileStatusBtn.classList.add('active');
   }
+
+  // Smooth scroll to top when changing tabs
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Dynamic Team Member Toggles
@@ -491,9 +507,15 @@ async function handleRegistrationSubmit(event) {
       body: formData
     });
 
-    const result = await response.json();
+    let result;
+    try {
+      result = await response.json();
+    } catch (parseErr) {
+      const rawText = await response.text().catch(() => '');
+      throw new Error(rawText || `Server responded with status ${response.status}`);
+    }
 
-    if (result.success) {
+    if (result && result.success) {
       document.getElementById('success-modal-message').textContent =
         `Team "${result.data.teamName}" (Leader: ${result.data.leaderName}) registration has been recorded successfully. Status is Pending Verification.`;
       document.getElementById('success-modal').classList.add('active');
@@ -505,11 +527,11 @@ async function handleRegistrationSubmit(event) {
       clearFormDraft();
       showToast('Registration submitted successfully!', 'success');
     } else {
-      showToast(result.message || 'Submission failed. Please check form fields.', 'error');
+      showToast((result && result.message) || 'Submission failed. Please check form fields.', 'error');
     }
   } catch (error) {
     console.error('Submission error:', error);
-    showToast('Network error while submitting registration. Please try again.', 'error');
+    showToast(error.message || 'Error submitting registration. Please try again.', 'error');
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Submit Registration`;

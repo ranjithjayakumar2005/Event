@@ -3,7 +3,7 @@
 Organized by the **Entrepreneurship Development Cell (E-Cell)**.
 
 A full-stack, enterprise-grade web application featuring a **Student Portal** (team registration, Eureka referral verification, form auto-save, dark/light theme switcher, pitch deck template download, status check) and a JWT-secured **Admin Portal** (real-time SSE dashboard sync, 2-column file lightbox previewer, auditorium QR scanner, email delivery tracking, CSV exporter, registration toggle, rate limiting, and binary signature security).
-
+b
 ---
 
 ## 🌟 Key Features & Capabilities
