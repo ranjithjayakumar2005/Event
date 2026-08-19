@@ -805,9 +805,68 @@ window.switchGuideTab = function (type) {
 window.initTheme = initTheme;
 window.toggleTheme = toggleTheme;
 
-// Auto Initialize Theme & Form Draft Recovery on DOM Load
+// Deadline Countdown Timer System
+function initDeadlineCountdown() {
+  const bar = document.getElementById('deadline-announcement-bar');
+  if (bar && sessionStorage.getItem('ecell_deadline_banner_dismissed') === 'true') {
+    bar.style.display = 'none';
+  }
+
+  // Registration Deadline: August 21, 2026 at 23:59:59 IST
+  const targetDate = new Date('2026-08-21T23:59:59+05:30').getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-mins');
+    const secsEl = document.getElementById('cd-secs');
+
+    if (distance <= 0) {
+      const timerWrapper = document.getElementById('countdown-timer-box');
+      if (timerWrapper) {
+        timerWrapper.innerHTML = '<span style="color: #ef4444; font-weight: 700;">Registration Closed</span>';
+      }
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+    if (minsEl) minsEl.textContent = String(minutes).padStart(2, '0');
+    if (secsEl) secsEl.textContent = String(seconds).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+function dismissAnnouncementBar() {
+  const bar = document.getElementById('deadline-announcement-bar');
+  if (bar) {
+    bar.style.opacity = '0';
+    bar.style.transform = 'translateY(-100%)';
+    setTimeout(() => {
+      bar.style.display = 'none';
+    }, 250);
+    sessionStorage.setItem('ecell_deadline_banner_dismissed', 'true');
+  }
+}
+
+window.initDeadlineCountdown = initDeadlineCountdown;
+window.dismissAnnouncementBar = dismissAnnouncementBar;
+
+// Auto Initialize Theme, Draft Recovery & Countdown on DOM Load
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   restoreFormDraft();
+  initDeadlineCountdown();
 });
+
 

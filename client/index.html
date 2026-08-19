@@ -219,6 +219,28 @@
   <!-- Toast Notification Container -->
   <div id="toast-container"></div>
 
+  <!-- Top Announcement Bar (Deadline Extension) -->
+  <aside class="announcement-bar" id="deadline-announcement-bar" role="alert" aria-label="Registration Deadline Update">
+    <div class="announcement-content">
+      <span class="announcement-tag">
+        <i class="fa-solid fa-bullhorn"></i> Extended
+      </span>
+      <span class="announcement-message">
+        Registration deadline is officially extended to <strong>August 21, 2026 (11:59 PM)</strong>!
+      </span>
+      <div class="countdown-timer-wrapper" id="countdown-timer-box" title="Time remaining until registration closes">
+        <i class="fa-solid fa-hourglass-half"></i>
+        <div class="countdown-unit-box"><span class="countdown-val" id="cd-days">00</span><span class="countdown-lbl">d</span></div>:
+        <div class="countdown-unit-box"><span class="countdown-val" id="cd-hours">00</span><span class="countdown-lbl">h</span></div>:
+        <div class="countdown-unit-box"><span class="countdown-val" id="cd-mins">00</span><span class="countdown-lbl">m</span></div>:
+        <div class="countdown-unit-box"><span class="countdown-val" id="cd-secs">00</span><span class="countdown-lbl">s</span></div>
+      </div>
+    </div>
+    <button type="button" class="announcement-close-btn" onclick="dismissAnnouncementBar()" title="Dismiss announcement">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </aside>
+
   <!-- Navigation Bar -->
   <header class="navbar">
     <div class="container nav-container" style="position: relative;">
@@ -264,6 +286,10 @@
       <p class="hero-subtitle">Organized by Entrepreneurship Development Cell (E-Cell). Turn your revolutionary idea
         into reality and compete for prize pools & mentorship.</p>
       <div class="hero-badges">
+        <span class="hero-badge deadline-extended-badge">
+          <span class="pulse-indicator-dot"></span>
+          <i class="fa-solid fa-clock-rotate-left"></i> Deadline Extended: <strong>21/08/2026 (11:59 PM)</strong>
+        </span>
         <span class="hero-badge"><i class="fa-solid fa-user-graduate"></i> Only 2nd & 3rd Year Students</span>
         <span class="hero-badge"><i class="fa-solid fa-users"></i> Team Size: 1 to 3 Members</span>
         <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Verification Required</span>
