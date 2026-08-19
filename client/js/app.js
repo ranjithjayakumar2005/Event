@@ -625,7 +625,21 @@ async function checkApplicationStatus() {
             </div>
           ` : ''}
 
-          <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px;">
+          <!-- WhatsApp Community Link Banner for Registered Teams -->
+          <div style="margin-top: 16px; padding: 12px 16px; background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.35); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-brands fa-whatsapp" style="font-size: 22px; color: #25d366;"></i>
+              <div>
+                <div style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Join Official WhatsApp Group</div>
+                <div style="font-size: 11.5px; color: var(--text-secondary);">Get presentation slot timings & venue announcements.</div>
+              </div>
+            </div>
+            <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-join" style="padding: 8px 16px; font-size: 12.5px;">
+              <i class="fa-brands fa-whatsapp"></i> Join Group
+            </a>
+          </div>
+
+          <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px; flex-wrap: wrap; gap: 10px;">
             <span style="font-size: 12px; color: var(--text-muted);">Submitted on: ${submittedDate}</span>
             <button type="button" class="btn-secondary" style="padding: 6px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;" onclick="printRegistrationPass('${encodeURIComponent(JSON.stringify(data))}')">
               <i class="fa-solid fa-print"></i> Print Official Registration Slip

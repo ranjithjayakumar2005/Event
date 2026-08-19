@@ -266,6 +266,9 @@
         <button class="nav-btn" id="tab-status-btn" onclick="switchTab('status')">
           <i class="fa-solid fa-magnifying-glass"></i> Check Status
         </button>
+        <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="nav-btn btn-whatsapp-nav">
+          <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> WhatsApp Group
+        </a>
         <a href="assets/Official-eureka-template.pptx" class="nav-btn" download="Official-eureka-template.pptx">
           <i class="fa-solid fa-download"></i> PPT Template
         </a>
@@ -290,6 +293,9 @@
           <span class="pulse-indicator-dot"></span>
           <i class="fa-solid fa-clock-rotate-left"></i> Deadline Extended: <strong>21/08/2026 (11:59 PM)</strong>
         </span>
+        <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="hero-badge whatsapp-hero-badge">
+          <i class="fa-brands fa-whatsapp"></i> Join Official WhatsApp Group
+        </a>
         <span class="hero-badge"><i class="fa-solid fa-user-graduate"></i> Only 2nd & 3rd Year Students</span>
         <span class="hero-badge"><i class="fa-solid fa-users"></i> Team Size: 1 to 3 Members</span>
         <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Verification Required</span>
@@ -299,6 +305,22 @@
         </a>
       </div>
     </section>
+
+    <!-- OFFICIAL WHATSAPP COMMUNITY NOTIFICATION BANNER -->
+    <div class="whatsapp-community-card">
+      <div class="whatsapp-card-left">
+        <div class="whatsapp-card-icon">
+          <i class="fa-brands fa-whatsapp"></i>
+        </div>
+        <div class="whatsapp-card-text">
+          <h3>Official WhatsApp Community for Registered Teams</h3>
+          <p>Join our official WhatsApp group for presentation slot schedules, auditorium updates, live Q&amp;A, and coordinator support.</p>
+        </div>
+      </div>
+      <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-join">
+        <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> Join WhatsApp Group
+      </a>
+    </div>
 
     <!-- SECTION 1: REGISTRATION TAB -->
     <div id="view-register" class="tab-view active">
@@ -822,6 +844,22 @@
             </div>
           </div>
 
+          <!-- Official WhatsApp Community Card in Help Section -->
+          <div class="coordinator-group-card" style="border-color: rgba(37, 211, 102, 0.35); background: rgba(37, 211, 102, 0.04);">
+            <div class="coordinator-group-header">
+              <div class="coordinator-gender-badge" style="background: linear-gradient(135deg, #25d366, #128c7e); color: #fff;">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 700; margin: 0; color: var(--text-primary);">WhatsApp Community</h3>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin: 0 0 12px; line-height: 1.4;">
+              Join our official WhatsApp group for instant announcements & queries.
+            </p>
+            <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-join" style="padding: 9px 16px; font-size: 13px; width: 100%;">
+              <i class="fa-brands fa-whatsapp"></i> Join Official Group
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
@@ -855,15 +893,29 @@
   <!-- Submission Success Modal -->
   <div class="modal-overlay" id="success-modal">
     <div class="modal-container" style="max-width: 500px; text-align: center;">
-      <div style="font-size: 56px; color: var(--accent-emerald); margin-bottom: 16px;">
+      <div style="font-size: 52px; color: var(--accent-emerald); margin-bottom: 12px;">
         <i class="fa-solid fa-circle-check"></i>
       </div>
-      <h2 style="font-size: 24px; margin-bottom: 12px;">Registration Submitted!</h2>
-      <p style="color: var(--text-secondary); font-size: 15px; margin-bottom: 20px;" id="success-modal-message">
+      <h2 style="font-size: 22px; margin-bottom: 8px;">Registration Submitted!</h2>
+      <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 18px;" id="success-modal-message">
         Your team registration has been recorded successfully. Status is currently Pending Verification by the admin.
       </p>
-      <button class="btn-primary" onclick="closeSuccessModal()">
-        Got It
+
+      <!-- MANDATORY WHATSAPP JOIN CARD IN SUCCESS MODAL -->
+      <div style="background: rgba(37, 211, 102, 0.1); border: 2px solid #25d366; border-radius: 16px; padding: 16px; margin-bottom: 20px; text-align: center;">
+        <div style="font-size: 13px; font-weight: 800; color: #25d366; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Next Step: Join WhatsApp Group
+        </div>
+        <p style="font-size: 13px; color: var(--text-primary); margin-bottom: 14px; line-height: 1.4;">
+          Please join our official WhatsApp group for presentation slot schedules, auditorium updates & team announcements.
+        </p>
+        <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-join" style="width: 100%; display: inline-flex; justify-content: center; padding: 12px 20px; font-size: 14px;">
+          <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Join Official WhatsApp Group
+        </a>
+      </div>
+
+      <button class="btn-primary" style="width: 100%; background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-color);" onclick="closeSuccessModal()">
+        Got It / Close
       </button>
     </div>
   </div>
@@ -954,6 +1006,10 @@
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Status</span>
     </button>
+    <a href="https://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4" target="_blank" rel="noopener noreferrer" class="mobile-nav-btn" style="color: #25d366;">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>WhatsApp</span>
+    </a>
     <a href="assets/Official-eureka-template.pptx" class="mobile-nav-btn" download="Official-eureka-template.pptx">
       <i class="fa-solid fa-download"></i>
       <span>PPT</span>

@@ -201,7 +201,7 @@ exports.registerTeam = async (req, res, next) => {
       sendEmail({
         email: newTeam.leader.email,
         subject: `Registration Received - Team "${newTeam.teamName}" | Startup Pitching Competition 2026`,
-        message: `Dear ${newTeam.leader.name},\n\nThank you for registering your team "${newTeam.teamName}" (${newTeam.startupName || newTeam.teamName}) for the Intra-College Startup Pitching Competition 2026.\n\nYour application has been received successfully and is currently Pending Verification by the E-Cell panel.\n\nOnce your submission is reviewed and approved by the admin team, you will receive an official Approval Email containing your Auditorium Entry QR Pass.`
+        message: `Dear ${newTeam.leader.name},\n\nThank you for registering your team "${newTeam.teamName}" (${newTeam.startupName || newTeam.teamName}) for the Intra-College Startup Pitching Competition 2026.\n\nYour application has been received successfully and is currently Pending Verification by the E-Cell panel.\n\n📌 MANDATORY NEXT STEP - Join Official WhatsApp Community:\nPlease join our official participant WhatsApp group to receive presentation batch timings, auditorium venue updates, and live event announcements:\nhttps://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4\n\nOnce your submission is reviewed and approved by the admin team, you will receive an official Approval Email containing your Auditorium Entry QR Pass.`
       }).then(async (emailRes) => {
         console.log(`[Student Confirmation Email] Sent to ${newTeam.leader.email}:`, emailRes.success);
         newTeam.emailLogs = newTeam.emailLogs || [];

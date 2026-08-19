@@ -258,7 +258,7 @@ exports.approveTeam = async (req, res, next) => {
       const emailOptions = {
         email: team.leader.email,
         subject: `🎉 Registration Approved! Auditorium Entry QR Pass - ${team.teamName}`,
-        message: `Congratulations ${team.leader ? team.leader.name : 'Team Leader'}!\n\nYour team "${team.teamName}" (${team.startupName || team.teamName}) has been officially APPROVED for the Intra-College Startup Pitching Competition 2026.\n\nYour official Auditorium Entry QR Pass is attached below. Present this QR Code at the auditorium entrance scanner for instant check-in.`,
+        message: `Congratulations ${team.leader ? team.leader.name : 'Team Leader'}!\n\nYour team "${team.teamName}" (${team.startupName || team.teamName}) has been officially APPROVED for the Intra-College Startup Pitching Competition 2026.\n\nYour official Auditorium Entry QR Pass is attached below. Present this QR Code at the auditorium entrance scanner for instant check-in.\n\n💬 Official WhatsApp Group:\nMake sure you have joined the official WhatsApp group for live batch slot calls & schedule updates:\nhttps://chat.whatsapp.com/CUD8nrqBTp46zWPFdKmrQW?s=qt&p=a&ilr=4`,
         qrData: qrPayload
       };
 
