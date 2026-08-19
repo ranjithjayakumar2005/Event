@@ -2453,3 +2453,30 @@ body:has(#image-lightbox-modal.active) .admin-mobile-icon-bar {
     right: 8px;
   }
 }
+
+@media (max-width: 480px) {
+  .announcement-bar {
+    padding: 7px 32px 7px 10px;
+  }
+  .announcement-content {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .announcement-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+  .announcement-message {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .countdown-timer-wrapper {
+    font-size: 11px;
+    padding: 2px 8px;
+    margin-top: 1px;
+  }
+  .countdown-val {
+    min-width: 15px;
+  }
+}
+
