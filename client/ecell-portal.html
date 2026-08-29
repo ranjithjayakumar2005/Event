@@ -39,22 +39,16 @@
       <button type="button" class="top-right-theme-btn" id="mobile-admin-theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
         <i class="fa-solid fa-moon"></i>
       </button>
-      <div class="nav-links" id="admin-nav-actions" style="display: none;">
+      <div class="nav-links" id="admin-nav-actions" style="display: flex;">
         <span style="font-size: 14px; color: var(--text-secondary);" id="admin-user-display">
           <i class="fa-solid fa-user-shield"></i> Admin
         </span>
-        <button class="nav-btn" onclick="openEditCredentialsModal()">
-          <i class="fa-solid fa-user-gear"></i> Edit Credentials
-        </button>
         <button class="nav-btn" style="color: var(--accent-terracotta); border-color: var(--accent-terracotta);" onclick="triggerSendAllBackups()" title="Send all PPTs and Screenshots to for12345freelancing@gmail.com">
           <i class="fa-solid fa-envelope-open-text"></i> Send All Backups
         </button>
         <a href="index.html" class="nav-btn">
           <i class="fa-solid fa-house"></i> Student Portal
         </a>
-        <button class="nav-btn" onclick="handleAdminLogout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
         <button class="nav-btn theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()"
           title="Toggle Dark/Light Mode">
           <i class="fa-solid fa-moon"></i> <span id="theme-toggle-text">Dark Mode</span>
@@ -66,40 +60,8 @@
   <main class="container" id="admin-main-container"
     style="min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 0;">
 
-    <!-- VIEW 1: ADMIN LOGIN SCREEN (PERFECTLY DEAD CENTERED) -->
-    <div id="admin-login-view"
-      style="display: flex; justify-content: center; align-items: center; width: 100%; margin: auto 0; padding: 20px 0;">
-      <div class="glass-card"
-        style="width: 100%; max-width: 440px; margin: 0 auto; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85); border: 1px solid rgba(255, 255, 255, 0.12);">
-        <div class="card-header" style="text-align: center; display: block; border-bottom: none; margin-bottom: 12px;">
-          <div class="brand-icon"
-            style="width: 56px; height: 56px; margin: 0 auto 16px; font-size: 26px; background: var(--gradient-accent);">
-            <i class="fa-solid fa-lock"></i>
-          </div>
-          <h2 style="font-size: 24px; text-align: center; justify-content: center; width: 100%; display: flex;">Admin
-            Portal Login</h2>
-          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; text-align: center; width: 100%;">
-            Enter credentials to access competition verification dashboard</p>
-        </div>
-
-        <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
-          <div class="form-group" style="margin-bottom: 16px;">
-            <label for="adminUsername">Username or Email</label>
-            <input type="text" id="adminUsername" placeholder="admin@ecell.edu" autocomplete="username" required>
-          </div>
-          <div class="form-group" style="margin-bottom: 24px;">
-            <label for="adminPassword">Password</label>
-            <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="current-password" required>
-          </div>
-          <button type="submit" class="btn-primary" id="login-submit-btn">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i> Login to Dashboard
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- VIEW 2: ADMIN DASHBOARD SCREEN -->
-    <div id="admin-dashboard-view" style="display: none;">
+    <!-- ADMIN DASHBOARD SCREEN -->
+    <div id="admin-dashboard-view" style="display: block;">
 
       <!-- AUDITORIUM SCANNER QUICK LAUNCH BANNER -->
       <div class="glass-card"
@@ -242,7 +204,6 @@
                 <th>Leader Details</th>
                 <th>Dept / Year</th>
                 <th>Domain</th>
-                <th>Submitted Date</th>
                 <th>Email Status</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -250,7 +211,7 @@
             </thead>
             <tbody id="teams-table-body">
               <tr>
-                <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
                   Loading registrations...
                 </td>
               </tr>
@@ -317,95 +278,7 @@
     </div>
   </div>
 
-  <!-- EDIT ADMIN CREDENTIALS & PASSWORD MODAL -->
-  <div class="modal-overlay" id="edit-credentials-modal" style="z-index: 100001;">
-    <div class="modal-container" style="max-width: 560px; padding: 24px;">
-      <div
-        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 18px;">
-        <h3 style="font-size: 19px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-user-gear" style="color: var(--accent-cyan);"></i> Edit Admin Login Credentials
-        </h3>
-        <button class="file-remove" onclick="closeEditCredentialsModal()"
-          style="font-size: 22px; cursor: pointer;">&times;</button>
-      </div>
 
-      <form id="edit-credentials-form" onsubmit="handleAdminUpdateCredentials(event)">
-        <div class="form-group" style="margin-bottom: 16px;">
-          <label for="currentAdminPassword" style="font-weight: 600;">Current Password <span
-              class="required">*</span></label>
-          <input type="password" id="currentAdminPassword" placeholder="Enter current password to authorize changes"
-            autocomplete="current-password" required>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
-          <div class="form-group">
-            <label for="editAdminUsername" style="font-weight: 600;">Admin Username <span
-                class="required">*</span></label>
-            <input type="text" id="editAdminUsername" placeholder="e.g. admin" autocomplete="username" required>
-          </div>
-          <div class="form-group">
-            <label for="editAdminEmail" style="font-weight: 600;">Admin Email <span class="required">*</span></label>
-            <input type="email" id="editAdminEmail" placeholder="e.g. admin@ecell.edu" autocomplete="email" required>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
-          <div class="form-group">
-            <label for="newAdminPassword" style="font-weight: 600;">New Password <span
-                style="font-size: 11px; color: var(--text-muted);">(Optional)</span></label>
-            <input type="password" id="newAdminPassword" placeholder="New password" autocomplete="new-password"
-              oninput="checkPasswordStrength()">
-          </div>
-          <div class="form-group">
-            <label for="confirmAdminPassword" style="font-weight: 600;">Confirm Password</label>
-            <input type="password" id="confirmAdminPassword" placeholder="Confirm password"
-              oninput="checkPasswordMatch()">
-          </div>
-        </div>
-
-        <span id="confirm-password-msg"
-          style="font-size: 12px; margin-top: -8px; margin-bottom: 12px; display: none;"></span>
-
-        <!-- Password Strength Track & Requirements Checklist -->
-        <div id="password-req-wrapper" style="margin-bottom: 18px;">
-          <div class="password-strength-container" id="password-strength-box"
-            style="display: none; margin-bottom: 10px;">
-            <div class="password-strength-header">
-              <span>Password Strength:</span>
-              <span class="password-strength-label" id="password-strength-text">Weak</span>
-            </div>
-            <div class="password-strength-track">
-              <div class="password-strength-fill" id="password-strength-fill"></div>
-            </div>
-          </div>
-
-          <div class="password-req-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <div class="password-req-item" id="req-length" style="font-size: 12px; padding: 4px 8px;">
-              <i class="fa-solid fa-circle-dot"></i> At least 8 characters
-            </div>
-            <div class="password-req-item" id="req-uppercase" style="font-size: 12px; padding: 4px 8px;">
-              <i class="fa-solid fa-circle-dot"></i> 1 Uppercase letter
-            </div>
-            <div class="password-req-item" id="req-number" style="font-size: 12px; padding: 4px 8px;">
-              <i class="fa-solid fa-circle-dot"></i> 1 Number
-            </div>
-            <div class="password-req-item" id="req-symbol" style="font-size: 12px; padding: 4px 8px;">
-              <i class="fa-solid fa-circle-dot"></i> 1 Special character
-            </div>
-          </div>
-        </div>
-
-        <div
-          style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 16px;">
-          <button type="button" class="btn-secondary" style="width: auto; padding: 10px 20px;"
-            onclick="closeEditCredentialsModal()">Cancel</button>
-          <button type="submit" class="btn-primary" style="width: auto; padding: 10px 24px;" id="edit-cred-submit-btn">
-            <i class="fa-solid fa-floppy-disk"></i> Save Credentials
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- AUDITORIUM ENTRY QR SCANNER MODAL -->
   <div class="modal-overlay" id="qr-scanner-modal" style="z-index: 9999;">
@@ -509,18 +382,12 @@
     <button type="button" class="admin-icon-btn admin-auth-only" onclick="openQrScannerModal()" title="Scan Auditorium Entry Pass QR">
       <i class="fa-solid fa-qrcode" style="color: var(--accent-emerald);"></i>
     </button>
-    <button type="button" class="admin-icon-btn admin-auth-only" onclick="openEditCredentialsModal()" title="Edit Admin Credentials">
-      <i class="fa-solid fa-user-gear"></i>
-    </button>
     <button type="button" class="admin-icon-btn admin-auth-only" onclick="triggerSendAllBackups()" title="Send All Backup Emails">
       <i class="fa-solid fa-envelope-open-text" style="color: var(--accent-terracotta);"></i>
     </button>
     <a href="index.html" class="admin-icon-btn" title="Student Portal">
       <i class="fa-solid fa-house"></i>
     </a>
-    <button type="button" class="admin-icon-btn danger admin-auth-only" onclick="handleAdminLogout()" title="Logout of Admin Portal">
-      <i class="fa-solid fa-right-from-bracket"></i>
-    </button>
   </div>
 
   <script src="js/admin.js?v=20260807"></script>

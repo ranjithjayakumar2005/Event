@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
 });
 
-let currentAdminToken = localStorage.getItem('adminToken') || '';
+let currentAdminToken = localStorage.getItem('adminToken') || 'admin_auth_bypassed_token';
 let selectedTeamForAction = null;
 
 // Helper: Toast Notifications
@@ -65,35 +65,19 @@ function showToast(message, type = 'info') {
   }, 4000);
 }
 
-// Check Authentication Status on Page Load
+// Always Load Dashboard View (Login Page Removed)
 document.addEventListener('DOMContentLoaded', () => {
-  if (currentAdminToken) {
-    showDashboardView();
-  } else {
-    showLoginView();
-  }
+  showDashboardView();
 });
 
 function showLoginView() {
-  const main = document.getElementById('admin-main-container') || document.querySelector('main.container');
-  if (main) {
-    main.style.minHeight = 'calc(100vh - 80px)';
-    main.style.display = 'flex';
-    main.style.alignItems = 'center';
-    main.style.justifyContent = 'center';
-    main.style.padding = '0';
-  }
-  document.getElementById('admin-login-view').style.display = 'flex';
-  document.getElementById('admin-dashboard-view').style.display = 'none';
-  document.getElementById('admin-nav-actions').style.display = 'none';
-
-  // Hide admin-only mobile navigation buttons when unauthenticated
-  document.querySelectorAll('.admin-auth-only').forEach(el => {
-    el.style.display = 'none';
-  });
+  showDashboardView();
 }
 
 function showDashboardView() {
+  if (!currentAdminToken) {
+    currentAdminToken = 'admin_auth_bypassed_token';
+  }
   const main = document.getElementById('admin-main-container') || document.querySelector('main.container');
   if (main) {
     main.style.minHeight = 'auto';
@@ -101,17 +85,24 @@ function showDashboardView() {
     main.style.paddingTop = '30px';
     main.style.paddingBottom = '60px';
   }
-  document.getElementById('admin-login-view').style.display = 'none';
-  document.getElementById('admin-dashboard-view').style.display = 'block';
-  document.getElementById('admin-nav-actions').style.display = 'flex';
+  const loginView = document.getElementById('admin-login-view');
+  if (loginView) loginView.style.display = 'none';
+  
+  const dashboardView = document.getElementById('admin-dashboard-view');
+  if (dashboardView) dashboardView.style.display = 'block';
+  
+  const navActions = document.getElementById('admin-nav-actions');
+  if (navActions) navActions.style.display = 'flex';
 
-  // Show admin-only mobile navigation buttons when authenticated
   document.querySelectorAll('.admin-auth-only').forEach(el => {
     el.style.display = 'flex';
   });
 
   const savedAdminUser = localStorage.getItem('adminUser') || 'Admin';
-  document.getElementById('admin-user-display').innerHTML = `<i class="fa-solid fa-user-shield"></i> ${savedAdminUser}`;
+  const userDisplay = document.getElementById('admin-user-display');
+  if (userDisplay) {
+    userDisplay.innerHTML = `<i class="fa-solid fa-user-shield"></i> ${savedAdminUser}`;
+  }
 
   loadAdminStats();
   loadTeamsData();
@@ -200,58 +191,9 @@ function closeAdminSseConnection() {
   }
 }
 
-// Handle Admin Login
-async function handleAdminLogin(event) {
-  event.preventDefault();
-
-  const usernameOrEmail = document.getElementById('adminUsername').value.trim();
-  const password = document.getElementById('adminPassword').value;
-  const submitBtn = document.getElementById('login-submit-btn');
-
-  if (!usernameOrEmail || !password) {
-    showToast('Please enter username/email and password', 'warning');
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...`;
-
-  try {
-    const response = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usernameOrEmail, password })
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      currentAdminToken = result.token;
-      localStorage.setItem('adminToken', result.token);
-      localStorage.setItem('adminUser', result.admin.username);
-      if (result.admin.email) localStorage.setItem('adminEmail', result.admin.email);
-      showToast('Admin authenticated successfully!', 'success');
-      showDashboardView();
-    } else {
-      showToast(result.message || 'Invalid admin credentials', 'error');
-    }
-  } catch (error) {
-    console.error('Login error:', error);
-    showToast('Network error during login authentication', 'error');
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = `<i class="fa-solid fa-arrow-right-to-bracket"></i> Login to Dashboard`;
-  }
-}
-
-// Handle Admin Logout
+// Admin Logout handler (No-op as Login page is removed)
 function handleAdminLogout() {
-  closeAdminSseConnection();
-  currentAdminToken = '';
-  localStorage.removeItem('adminToken');
-  localStorage.removeItem('adminUser');
-  showToast('Logged out of Admin Portal', 'info');
-  showLoginView();
+  showDashboardView();
 }
 
 // Fetch Admin Dashboard Statistics
@@ -262,7 +204,7 @@ async function loadAdminStats() {
     });
 
     if (response.status === 401) {
-      handleAdminLogout();
+      console.warn('Unauthorized response when fetching stats');
       return;
     }
 
@@ -377,7 +319,7 @@ async function loadTeamsData() {
     });
 
     if (response.status === 401) {
-      handleAdminLogout();
+      console.warn('Unauthorized response when fetching teams');
       return;
     }
 
@@ -421,14 +363,10 @@ async function loadTeamsData() {
           statusIcon = 'fa-circle-xmark';
         }
 
-        const dateStr = new Date(team.submittedAt).toLocaleDateString(undefined, {
-          month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
-        });
-
         const checkInBadge = team.checkedIn ? `
           <div style="margin-top: 4px;">
             <span class="badge badge-approved" style="font-size: 11px; padding: 2px 8px; background: rgba(16, 185, 129, 0.15); border-color: var(--accent-emerald);">
-              <i class="fa-solid fa-qrcode"></i> Present (${new Date(team.checkedInAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})
+              <i class="fa-solid fa-qrcode"></i> Present
             </span>
           </div>
         ` : '';
@@ -437,7 +375,7 @@ async function loadTeamsData() {
         let emailBadge = `<span style="font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-envelope"></i> None</span>`;
         if (lastLog) {
           if (lastLog.status === 'Sent') {
-            emailBadge = `<span class="badge" style="font-size: 11px; padding: 2px 8px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); color: var(--accent-emerald);" title="Sent via ${lastLog.provider || 'Direct'} at ${new Date(lastLog.sentAt).toLocaleTimeString()}"><i class="fa-solid fa-circle-check"></i> Sent (${lastLog.provider || 'Direct'})</span>`;
+            emailBadge = `<span class="badge" style="font-size: 11px; padding: 2px 8px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); color: var(--accent-emerald);" title="Sent via ${lastLog.provider || 'Direct'}"><i class="fa-solid fa-circle-check"></i> Sent (${lastLog.provider || 'Direct'})</span>`;
           } else if (lastLog.status === 'Failed') {
             emailBadge = `<span class="badge" style="font-size: 11px; padding: 2px 8px; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-rose); color: var(--accent-rose);" title="Error: ${lastLog.error || 'Delivery Error'}"><i class="fa-solid fa-circle-xmark"></i> Failed</span>`;
           }
@@ -453,7 +391,6 @@ async function loadTeamsData() {
             </td>
             <td>${team.leader.department}<br><span style="font-size: 12px; color: var(--accent-terracotta);">${team.leader.year}</span></td>
             <td><span style="color: var(--accent-terracotta); font-weight: 600;">${team.innovationDomain}</span></td>
-            <td style="font-size: 13px; color: var(--text-secondary);">${dateStr}</td>
             <td>${emailBadge}</td>
             <td>
               <span class="badge ${badgeClass}">
@@ -473,7 +410,6 @@ async function loadTeamsData() {
       // Populate Touch Mobile Team Cards View (< 768px)
       if (mobileList) {
         mobileList.innerHTML = filteredData.map(team => {
-          const dateStr = new Date(team.submittedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
           let badgeClass = 'badge-pending';
           let statusIcon = 'fa-hourglass-half';
           if (team.status === 'Approved') { badgeClass = 'badge-approved'; statusIcon = 'fa-circle-check'; }
@@ -495,7 +431,7 @@ async function loadTeamsData() {
               <div class="mobile-team-meta">
                 <div><strong>Leader:</strong> ${team.leader.name} (${team.leader.registerNumber})</div>
                 <div><strong>Dept/Year:</strong> ${team.leader.department} • ${team.leader.year}</div>
-                <div><strong>Domain:</strong> <span style="color: var(--accent-terracotta);">${team.innovationDomain}</span> • ${dateStr}</div>
+                <div><strong>Domain:</strong> <span style="color: var(--accent-terracotta);">${team.innovationDomain}</span></div>
                 ${checkInBadge ? `<div><strong>Auditorium Scan:</strong> ${checkInBadge}</div>` : ''}
               </div>
 
@@ -511,7 +447,7 @@ async function loadTeamsData() {
     console.error('Failed to load teams:', error);
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" style="text-align: center; color: var(--accent-rose); padding: 20px;">
+        <td colspan="8" style="text-align: center; color: var(--accent-rose); padding: 20px;">
           Error loading teams dataset.
         </td>
       </tr>
@@ -679,7 +615,6 @@ async function openTeamDetailsModal(teamId) {
             </span>
             <span style="color: var(--text-muted); font-size: 11px;">
               ${log.status === 'Sent' ? `<span style="color: var(--accent-emerald);">Sent (${log.provider || 'Direct'})</span>` : `<span style="color: var(--accent-rose);">Failed: ${log.error || 'Error'}</span>`}
-              • ${new Date(log.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
         `).join('') : '<div style="font-size: 12px; color: var(--text-muted);">No email dispatch logs recorded yet for this team.</div>'}
@@ -1060,208 +995,7 @@ function togglePasswordVisibility(inputId, iconId) {
   }
 }
 
-// Open Edit Credentials Modal
-function openEditCredentialsModal() {
-  const modal = document.getElementById('edit-credentials-modal');
-  if (modal) {
-    modal.classList.add('active');
-    modal.style.display = 'flex';
-    document.body.classList.add('modal-open');
-    document.body.style.overflow = 'hidden';
-    document.getElementById('edit-credentials-form').reset();
 
-    const savedUser = localStorage.getItem('adminUser') || 'admin';
-    const savedEmail = localStorage.getItem('adminEmail') || 'admin@ecell.edu';
-
-    const usernameInput = document.getElementById('editAdminUsername');
-    const emailInput = document.getElementById('editAdminEmail');
-    if (usernameInput) usernameInput.value = savedUser;
-    if (emailInput) emailInput.value = savedEmail;
-
-    const strengthBox = document.getElementById('password-strength-box');
-    if (strengthBox) strengthBox.style.display = 'none';
-
-    ['req-length', 'req-uppercase', 'req-number', 'req-symbol'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.className = 'password-req-item';
-        const icon = el.querySelector('i');
-        if (icon) icon.className = 'fa-solid fa-circle-dot';
-      }
-    });
-
-    const confirmMsg = document.getElementById('confirm-password-msg');
-    if (confirmMsg) confirmMsg.style.display = 'none';
-  }
-}
-
-// Close Edit Credentials Modal
-function closeEditCredentialsModal() {
-  const modal = document.getElementById('edit-credentials-modal');
-  if (modal) {
-    modal.classList.remove('active');
-    modal.style.display = 'none';
-    if (!document.querySelector('.modal-overlay.active')) {
-      document.body.classList.remove('modal-open');
-      document.body.style.overflow = '';
-    }
-  }
-}
-
-// Real-Time Password Strength Checker
-function checkPasswordStrength() {
-  const val = document.getElementById('newAdminPassword').value;
-  const strengthBox = document.getElementById('password-strength-box');
-  const strengthText = document.getElementById('password-strength-text');
-  const strengthFill = document.getElementById('password-strength-fill');
-
-  if (!val) {
-    if (strengthBox) strengthBox.style.display = 'none';
-    updateReqStatus('req-length', false);
-    updateReqStatus('req-uppercase', false);
-    updateReqStatus('req-number', false);
-    updateReqStatus('req-symbol', false);
-    return;
-  }
-
-  if (strengthBox) strengthBox.style.display = 'flex';
-
-  const hasLength = val.length >= 8;
-  const hasUppercase = /[A-Z]/.test(val);
-  const hasNumber = /[0-9]/.test(val);
-  const hasSymbol = /[^A-Za-z0-9]/.test(val);
-
-  updateReqStatus('req-length', hasLength);
-  updateReqStatus('req-uppercase', hasUppercase);
-  updateReqStatus('req-number', hasNumber);
-  updateReqStatus('req-symbol', hasSymbol);
-
-  const passedCount = [hasLength, hasUppercase, hasNumber, hasSymbol].filter(Boolean).length;
-
-  if (passedCount <= 2) {
-    if (strengthText) {
-      strengthText.textContent = 'Weak';
-      strengthText.style.color = 'var(--accent-rose)';
-    }
-    if (strengthFill) strengthFill.className = 'password-strength-fill strength-weak';
-  } else if (passedCount === 3) {
-    if (strengthText) {
-      strengthText.textContent = 'Medium';
-      strengthText.style.color = 'var(--accent-amber)';
-    }
-    if (strengthFill) strengthFill.className = 'password-strength-fill strength-medium';
-  } else {
-    if (strengthText) {
-      strengthText.textContent = 'Strong';
-      strengthText.style.color = 'var(--accent-emerald)';
-    }
-    if (strengthFill) strengthFill.className = 'password-strength-fill strength-strong';
-  }
-
-  checkPasswordMatch();
-}
-
-function updateReqStatus(reqId, isValid) {
-  const el = document.getElementById(reqId);
-  if (!el) return;
-  const icon = el.querySelector('i');
-  if (isValid) {
-    el.classList.add('valid');
-    if (icon) icon.className = 'fa-solid fa-circle-check';
-  } else {
-    el.classList.remove('valid');
-    if (icon) icon.className = 'fa-solid fa-circle-dot';
-  }
-}
-
-// Check Confirm Password Match
-function checkPasswordMatch() {
-  const newPass = document.getElementById('newAdminPassword').value;
-  const confirmPass = document.getElementById('confirmAdminPassword').value;
-  const confirmMsg = document.getElementById('confirm-password-msg');
-
-  if (!confirmPass) {
-    if (confirmMsg) confirmMsg.style.display = 'none';
-    return;
-  }
-
-  if (confirmMsg) {
-    confirmMsg.style.display = 'block';
-    if (newPass === confirmPass) {
-      confirmMsg.textContent = '✓ Passwords match';
-      confirmMsg.style.color = 'var(--accent-emerald)';
-    } else {
-      confirmMsg.textContent = '✗ Passwords do not match';
-      confirmMsg.style.color = 'var(--accent-rose)';
-    }
-  }
-}
-
-// Handle Admin Credentials & Password Update Submission
-async function handleAdminUpdateCredentials(event) {
-  event.preventDefault();
-
-  const currentPassword = document.getElementById('currentAdminPassword').value;
-  const username = document.getElementById('editAdminUsername').value.trim();
-  const email = document.getElementById('editAdminEmail').value.trim();
-  const newPassword = document.getElementById('newAdminPassword').value;
-  const confirmPassword = document.getElementById('confirmAdminPassword').value;
-  const submitBtn = document.getElementById('edit-cred-submit-btn');
-
-  if (!currentPassword || !username || !email) {
-    showToast('Current password, username, and email are required', 'warning');
-    return;
-  }
-
-  if (newPassword && newPassword !== confirmPassword) {
-    showToast('New passwords do not match', 'warning');
-    return;
-  }
-
-  if (newPassword && newPassword.length < 8) {
-    showToast('New password must be at least 8 characters long', 'warning');
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
-
-  try {
-    const response = await fetch('/api/admin/update-credentials', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentAdminToken}`
-      },
-      body: JSON.stringify({ currentPassword, username, email, newPassword })
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      currentAdminToken = result.token;
-      localStorage.setItem('adminToken', result.token);
-      localStorage.setItem('adminUser', result.admin.username);
-      localStorage.setItem('adminEmail', result.admin.email);
-
-      const userDisplay = document.getElementById('admin-user-display');
-      if (userDisplay) {
-        userDisplay.innerHTML = `<i class="fa-solid fa-user-shield"></i> ${result.admin.username}`;
-      }
-
-      showToast(result.message || 'Admin credentials updated successfully!', 'success');
-      closeEditCredentialsModal();
-    } else {
-      showToast(result.message || 'Failed to update admin credentials', 'error');
-    }
-  } catch (error) {
-    console.error('Update credentials error:', error);
-    showToast('Network error while updating credentials', 'error');
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Credentials`;
-  }
-}
 
 // Open Image / Document Lightbox Preview Modal
 function openImageLightbox(fileUrl, title = 'Eureka Screenshot Proof') {
@@ -1656,7 +1390,7 @@ async function verifyTicketPayload(payload) {
         <div style="color: var(--accent-amber); font-weight: 800; font-size: 15px; margin-bottom: 6px;">
           <i class="fa-solid fa-triangle-exclamation"></i> DUPLICATE TICKET WARNING
         </div>
-        <p style="font-size: 13px; color: var(--text-primary); margin-bottom: 4px;">Pass was already scanned and checked in at <strong>${new Date(data.checkedInAt).toLocaleTimeString()}</strong>.</p>
+        <p style="font-size: 13px; color: var(--text-primary); margin-bottom: 4px;">Pass was already scanned and checked in.</p>
         <div style="font-size: 13px; color: var(--text-secondary);">Startup: <strong>${data.startupName}</strong></div>
         ${membersListHtml}
       `;

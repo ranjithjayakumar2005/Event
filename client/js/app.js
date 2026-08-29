@@ -639,8 +639,7 @@ async function checkApplicationStatus() {
             </a>
           </div>
 
-          <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px; flex-wrap: wrap; gap: 10px;">
-            <span style="font-size: 12px; color: var(--text-muted);">Submitted on: ${submittedDate}</span>
+          <div style="margin-top: 16px; display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px; flex-wrap: wrap; gap: 10px;">
             <button type="button" class="btn-secondary" style="padding: 6px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;" onclick="printRegistrationPass('${encodeURIComponent(JSON.stringify(data))}')">
               <i class="fa-solid fa-print"></i> Print Official Registration Slip
             </button>
@@ -724,7 +723,6 @@ function printRegistrationPass(encodedData) {
           <div class="field"><label>Leader Register No</label><span>${data.registerNumber}</span></div>
           <div class="field"><label>Department / Year</label><span>${data.department} (${data.year})</span></div>
           <div class="field"><label>Innovation Domain</label><span>${data.innovationDomain}</span></div>
-          <div class="field"><label>Submission Date</label><span>${new Date(data.submittedAt).toLocaleDateString()}</span></div>
         </div>
         <div class="footer">
           <span>Official E-Cell Verification Slip</span>

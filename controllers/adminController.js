@@ -433,7 +433,6 @@ exports.exportRegistrationsCsv = async (req, res, next) => {
       'Abstract',
       'Status',
       'Rejection Reason',
-      'Submission Date',
       'PPT File Path',
       'Eureka Screenshot Path'
     ];
@@ -472,7 +471,6 @@ exports.exportRegistrationsCsv = async (req, res, next) => {
         escapeCsv(t.abstract),
         escapeCsv(t.status),
         escapeCsv(t.rejectionReason || ''),
-        escapeCsv(new Date(t.submittedAt).toISOString()),
         escapeCsv(t.pptFile),
         escapeCsv(t.eurekaScreenshot)
       ];
